@@ -2,6 +2,8 @@ package common_api
 
 import (
 	"net/url"
+
+	"github.com/ros-tel/taximaster/validator"
 )
 
 type (
@@ -17,7 +19,7 @@ type (
 func (cl *Client) SendSms(req SendSmsRequest) (EmptyResponse, error) {
 	var response = EmptyResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

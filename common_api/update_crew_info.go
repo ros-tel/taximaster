@@ -1,5 +1,7 @@
 package common_api
 
+import "github.com/ros-tel/taximaster/validator"
+
 type (
 	UpdateCrewInfoRequest struct {
 		// ИД экипажа
@@ -37,7 +39,7 @@ type (
 func (cl *Client) UpdateCrewInfo(req UpdateCrewInfoRequest) (EmptyResponse, error) {
 	var response = EmptyResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

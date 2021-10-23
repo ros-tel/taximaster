@@ -3,6 +3,8 @@ package common_api
 import (
 	"net/url"
 	"strconv"
+
+	"github.com/ros-tel/taximaster/validator"
 )
 
 type (
@@ -56,7 +58,7 @@ type (
 func (cl *Client) GetDriverInfo(req GetDriverInfoRequest) (GetDriverInfoResponse, error) {
 	var response = GetDriverInfoResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

@@ -1,5 +1,7 @@
 package common_api
 
+import "github.com/ros-tel/taximaster/validator"
+
 type (
 	CreateCrewRequest struct {
 		// ИД автомобиля
@@ -40,7 +42,7 @@ type (
 func (cl *Client) CreateCrew(req CreateCrewRequest) (CreateCrewResponse, error) {
 	var response = CreateCrewResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

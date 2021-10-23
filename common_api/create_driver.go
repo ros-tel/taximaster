@@ -1,5 +1,7 @@
 package common_api
 
+import "github.com/ros-tel/taximaster/validator"
+
 type (
 	CreateDriverRequest struct {
 		// ФИО водителя
@@ -52,7 +54,7 @@ type (
 func (cl *Client) CreateDriver(req CreateDriverRequest) (CreateDriverResponse, error) {
 	var response = CreateDriverResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

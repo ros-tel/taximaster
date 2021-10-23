@@ -1,5 +1,7 @@
 package common_api
 
+import "github.com/ros-tel/taximaster/validator"
+
 type (
 	ShowTmMessageRequest struct {
 		// Текст сообщения
@@ -18,7 +20,7 @@ type (
 func (cl *Client) ShowTmMessage(req ShowTmMessageRequest) (EmptyResponse, error) {
 	var response = EmptyResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

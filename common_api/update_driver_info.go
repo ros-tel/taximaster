@@ -1,5 +1,7 @@
 package common_api
 
+import "github.com/ros-tel/taximaster/validator"
+
 type (
 	UpdateDriverInfoRequest struct {
 		// ИД редактируемого водителя
@@ -60,7 +62,7 @@ type (
 func (cl *Client) UpdateDriverInfo(req UpdateDriverInfoRequest) (EmptyResponse, error) {
 	var response = EmptyResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

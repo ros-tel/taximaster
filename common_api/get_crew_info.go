@@ -3,6 +3,8 @@ package common_api
 import (
 	"net/url"
 	"strconv"
+
+	"github.com/ros-tel/taximaster/validator"
 )
 
 type (
@@ -59,7 +61,7 @@ type (
 func (cl *Client) GetCrewInfo(req GetCrewInfoRequest) (GetCrewInfoResponse, error) {
 	var response = GetCrewInfoResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}

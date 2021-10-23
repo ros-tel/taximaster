@@ -2,6 +2,8 @@ package common_api
 
 import (
 	"net/url"
+
+	"github.com/ros-tel/taximaster/validator"
 )
 
 type (
@@ -31,7 +33,7 @@ type (
 func (cl *Client) AnalyzePhone(req AnalyzePhoneRequest) (AnalyzePhoneResponse, error) {
 	var response = AnalyzePhoneResponse{}
 
-	err := validate(req)
+	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}
