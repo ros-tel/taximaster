@@ -30,4 +30,31 @@ type (
 		// 	Значение, если тип атрибута "Строка"
 		StrValue *string `json:"str_value,omitempty"`
 	}
+
+	Point struct {
+		// Широта
+		Lat float64 `json:"lat"`
+		// Долгота
+		Lon float64 `json:"lon"`
+	}
+
+	Stop struct {
+		// Адрес остановки
+		Address string `json:"address"`
+		// Широта адреса остановки
+		Lat float64 `json:"lat"`
+		// Долгота адреса остановки
+		Lon float64 `json:"lon"`
+	}
+
+	Address struct {
+		// Широта адреса
+		Lat float64 `json:"lat"`
+		// Долгота адреса
+		Lon float64 `json:"lon"`
+		// ИД района
+		ZoneID int `json:"zone_id"`
+		// ИД стоянки
+		ParkingID int `json:"parking_id"`
+	}
 )

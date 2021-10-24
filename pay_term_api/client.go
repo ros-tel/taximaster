@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -52,7 +51,7 @@ func (cl *Client) Post(reqName string, values url.Values, obj_resp interface{}) 
 	url := "https://" + cl.addr + "/pay_term_api/1.0/" + reqName
 
 	body := []byte(values.Encode())
-	log.Println(string(body))
+
 	req, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {
 		return err
