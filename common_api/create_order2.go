@@ -52,7 +52,7 @@ type (
 		// ИД сотрудника клиента (если задан client_id)
 		ClientEmployeeID int `json:"client_employee_id,omitempty" validate:"omitempty"`
 		// Email для отправки уведомлений
-		Email string `json:"email,omitempty" validate:"omitempty"`
+		Email string `json:"email,omitempty" validate:"omitempty,email"`
 		// Время перехода из предварительного в текущие заказы, мин
 		PriorToCurrentBeforeMinutes int `json:"prior_to_current_before_minutes,omitempty" validate:"omitempty"`
 		// Номер рейса

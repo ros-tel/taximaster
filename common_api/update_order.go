@@ -48,7 +48,7 @@ type (
 		// Автоматически обновить параметры заказа по клиенту и группе клиента
 		AutoUpdateOrderParams *bool `json:"auto_update_order_params,omitempty" validate:"omitempty"`
 		// Email для уведомлений
-		Email *string `json:"email,omitempty" validate:"omitempty"`
+		Email *string `json:"email,omitempty" validate:"omitempty,email"`
 		// Время перехода из предварительного в текущие заказы, мин
 		PriorToCurrentBeforeMinutes *int `json:"prior_to_current_before_minutes,omitempty" validate:"omitempty"`
 		// Номер рейса
