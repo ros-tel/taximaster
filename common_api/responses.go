@@ -15,6 +15,8 @@ type (
 		AccountKind int `json:"account_kind"`
 		// Баланс счета
 		Balance float64 `json:"balance"`
+		// Баланс счета клиента с учетом вложенных клиентов
+		BalanceWithChildren float64 `json:"balance_with_children"`
 	}
 
 	AttributeValue struct {
