@@ -22,15 +22,15 @@ type (
 		// Год выпуска
 		ProductionYear int `json:"production_year,omitempty" validate:"omitempty"`
 		// Класс автомобиля (A, B, C, ...)
-		CarClass int `json:"car_class,omitempty" validate:"omitempty"`
+		CarClass string `json:"car_class,omitempty" validate:"omitempty"`
 		// VIN
-		Vin int `json:"vin,omitempty" validate:"omitempty"`
+		Vin string `json:"vin,omitempty" validate:"omitempty"`
 		// Номер кузова
-		BodyNumber int `json:"body_number,omitempty" validate:"omitempty"`
+		BodyNumber string `json:"body_number,omitempty" validate:"omitempty"`
 		// Номер двигателя
-		EngineNumber int `json:"engine_number,omitempty" validate:"omitempty"`
+		EngineNumber string `json:"engine_number,omitempty" validate:"omitempty"`
 		// Разрешение на перевозку
-		Permit int `json:"permit,omitempty" validate:"omitempty"`
+		Permit string `json:"permit,omitempty" validate:"omitempty"`
 		// Описание
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
 		// Фотография автомобиля
