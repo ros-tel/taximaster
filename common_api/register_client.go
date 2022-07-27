@@ -87,7 +87,20 @@ func (cl *Client) RegisterClient(req RegisterClientRequest) (RegisterClientRespo
 		v.Add("use_own_account", "true")
 	}
 
-	err = cl.Post("register_client", v, &response)
+	/*
+		100 Клиент с ИД=ID имеет такой же номер телефона=PHONE
+		101 Клиент с логином=LOGIN уже существует
+		102 Группа клиента с ИД=CLIENT_GROUP не найдена
+		103 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
+	*/
+	e := errorMap{
+		100: ErrClientConflictByPhone,
+		101: ErrClientExistsWithLogin,
+		102: ErrClientGroupNotFound,
+		103: ErrParentClientNotFound,
+	}
+
+	err = cl.Post("register_client", e, v, &response)
 
 	return response, err
 }

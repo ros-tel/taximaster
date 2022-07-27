@@ -140,7 +140,11 @@ type (
 )
 
 // Запрос информации о состоянии заказа
-func (cl *Client) GetOrderState(req GetOrderStateRequest) (GetOrderStateResponse, error) {
+func (cl *Client) GetOrderState(order_id int) (GetOrderStateResponse, error) {
+	req := GetOrderStateRequest{
+		OrderID: order_id,
+	}
+
 	var response = GetOrderStateResponse{}
 
 	err := validator.Validate(req)
@@ -151,7 +155,14 @@ func (cl *Client) GetOrderState(req GetOrderStateRequest) (GetOrderStateResponse
 	v := url.Values{}
 	v.Add("order_id", strconv.Itoa(req.OrderID))
 
-	err = cl.Get("get_order_state", v, &response)
+	/*
+		100 Заказ не найден
+	*/
+	e := errorMap{
+		100: ErrOrderNotFound,
+	}
+
+	err = cl.Get("get_order_state", e, v, &response)
 
 	return response, err
 }

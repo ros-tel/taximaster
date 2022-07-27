@@ -47,7 +47,24 @@ func (cl *Client) CreateCrew(req CreateCrewRequest) (CreateCrewResponse, error) 
 		return response, err
 	}
 
-	err = cl.PostJson("create_crew", req, &response)
+	/*
+		100 Автомобиль с ИД=ID не найден
+		101 Водитель с ИД=ID не найден
+		102 Группа экипажа с ИД=ID не найдена
+		103 Параметр с ИД=ID не найден или не может быть привязан к экипажу
+		104 Экипаж с таким водителем и автомобилем уже существует
+		105 Служба ЕДС автомобиля и водителя не совпадает
+	*/
+	e := errorMap{
+		100: ErrCarNotFound,
+		101: ErrDriverNotFound,
+		102: ErrCrewNotFound,
+		103: ErrParameterNotFoundOrCannotBeBoundCrew,
+		104: ErrCrewConflictByDriverAndCar,
+		105: ErrUdsCarAndDriverDoesNotMatch,
+	}
+
+	err = cl.PostJson("create_crew", e, req, &response)
 
 	return response, err
 }

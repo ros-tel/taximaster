@@ -28,7 +28,7 @@ func (cl *Client) SendSms(req SendSmsRequest) (EmptyResponse, error) {
 	v.Add("phone", req.Phone)
 	v.Add("message", req.Message)
 
-	err = cl.Post("send_sms", v, &response)
+	err = cl.Post("send_sms", errorMap{}, v, &response)
 
 	return response, err
 }

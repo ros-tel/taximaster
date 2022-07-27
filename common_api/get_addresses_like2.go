@@ -117,7 +117,16 @@ func (cl *Client) GetAddressesLike2(req GetAddressesLike2Request) (GetAddressesL
 		v.Add("search_in_tmgeoservice", "true")
 	}
 
-	err = cl.Get("get_addresses_like2", v, &response)
+	/*
+		100 Подходящие адреса не найдены
+		101 Не указано место для поиска адресов
+	*/
+	e := errorMap{
+		100: ErrNoMatchingAddressesFound,
+		101: ErrSearchLocationNotSpecified,
+	}
+
+	err = cl.Get("get_addresses_like2", e, v, &response)
 
 	return response, err
 }

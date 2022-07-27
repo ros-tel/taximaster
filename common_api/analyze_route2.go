@@ -36,7 +36,14 @@ func (cl *Client) AnalyzeRoute2(req AnalyzeRoute2Request) (AnalyzeRoute2Response
 		return response, err
 	}
 
-	err = cl.PostJson("analyze_route2", req, &response)
+	/*
+		100 Маршрут не распознан
+	*/
+	e := errorMap{
+		100: ErrRouteNotRecognized,
+	}
+
+	err = cl.PostJson("analyze_route2", e, req, &response)
 
 	return response, err
 }

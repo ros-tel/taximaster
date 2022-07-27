@@ -69,7 +69,14 @@ func (cl *Client) GetCrewInfo(req GetCrewInfoRequest) (GetCrewInfoResponse, erro
 	v := url.Values{}
 	v.Add("crew_id", strconv.Itoa(req.CrewID))
 
-	err = cl.Get("get_crew_info", v, &response)
+	/*
+		100 Экипаж не найден
+	*/
+	e := errorMap{
+		100: ErrCrewNotFound,
+	}
+
+	err = cl.Get("get_crew_info", e, v, &response)
 
 	return response, err
 }

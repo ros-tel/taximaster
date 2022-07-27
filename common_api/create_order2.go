@@ -4,7 +4,7 @@ import "github.com/ros-tel/taximaster/validator"
 
 type (
 	CreateOrder2Request struct {
-		// Номер телефонам (необязателен, если client_id присутствует)
+		// Номер телефона (необязателен, если client_id присутствует)
 		Phone string `json:"phone,omitempty" validate:"omitempty,max=30"`
 		// ИД клиента (необязателен, если phone присутствует)
 		ClientID int `json:"client_id,omitempty" validate:"omitempty"`
@@ -66,6 +66,8 @@ type (
 	CreateOrder2Response struct {
 		// ИД созданного заказа
 		OrderID int `json:"order_id"`
+		// Текст ошибки для пользователя
+		Message string `json:"message"`
 	}
 )
 
@@ -78,7 +80,49 @@ func (cl *Client) CreateOrder2(req CreateOrder2Request) (CreateOrder2Response, e
 		return response, err
 	}
 
-	err = cl.PostJson("create_order2", req, &response)
+	/*
+		100 Заказ с такими параметрами уже создан
+		101 Тариф не найден
+		102 Группа экипажа не найдена
+		103 Служба ЕДС не найдена
+		104 Клиент не найден
+		105 Район не найден
+		106 Стоянка не найдена
+		107 Сотрудник клиента не найден
+		108 Параметр заказа не найден
+		109 Атрибут не может быть привязан к заказу
+		110 Клиент заблокирован
+		111 Не найден клиент, который может использовать собственный счет для оплаты заказов
+		112 Сотрудник клиента заблокирован
+		113 Ошибка специальной проверки заказа перед созданием. В ответе будет возвращаться:
+		 "data": {
+		   "message":"Текст ошибки для пользователя."
+		 }
+		114 Недостаточно средств на безналичном счете клиента в ТМ
+		115 Отрицательный баланс на безналичном счете клиента в ТМ
+		116 Для клиента запрещена оплата заказа наличными. Клиент должен максимально использовать в заказе безналичную оплату (оплату с основного счета)
+	*/
+	e := errorMap{
+		100: ErrOrderExistsWithParametrs,
+		101: ErrTariffNotFound,
+		102: ErrCrewNotFound,
+		103: ErrUdsNotFound,
+		104: ErrClientNotFound,
+		105: ErrZoneNotFound,
+		106: ErrStopNotFound,
+		107: ErrCustomerClientNotFound,
+		108: ErrOrderParameterNotFound,
+		109: ErrAttributeCannotBeBoundOrder,
+		110: ErrClientBlocked,
+		111: ErrClientwhoCanUseTheirOwnNotFound,
+		112: ErrCustomerClientBlocked,
+		113: ErrSpecialOrderCheck,
+		114: ErrInsufficientFundsCashless,
+		115: ErrNegativeBalanceCashless,
+		116: ErrCashPaymentNotAllowed,
+	}
+
+	err = cl.PostJson("create_order2", e, req, &response)
 
 	return response, err
 }

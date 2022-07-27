@@ -5,7 +5,6 @@ import (
 	"crypto/md5"
 	"crypto/tls"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,7 +46,7 @@ func NewClient(addr, key string) *Client {
 	}
 }
 
-func (cl *Client) Get(reqName string, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 	var request string
 	if values != nil {
@@ -77,13 +76,13 @@ func (cl *Client) Get(reqName string, values url.Values, obj_resp interface{}) e
 	}
 
 	if r.Code != 0 {
-		return errors.New(fmt.Sprintf("Code: %d. Descr: %s", r.Code, r.Descr))
+		return errorByCode(e, r.Code, r.Descr)
 	}
 
 	return nil
 }
 
-func (cl *Client) Post(reqName string, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 
 	body := []byte(values.Encode())
@@ -109,13 +108,13 @@ func (cl *Client) Post(reqName string, values url.Values, obj_resp interface{}) 
 	}
 
 	if r.Code != 0 {
-		return errors.New(fmt.Sprintf("Code: %d. Descr: %s", r.Code, r.Descr))
+		return errorByCode(e, r.Code, r.Descr)
 	}
 
 	return nil
 }
 
-func (cl *Client) PostJson(reqName string, obj_req, obj_resp interface{}) error {
+func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp interface{}) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 
 	body, err := json.Marshal(obj_req)
@@ -144,8 +143,45 @@ func (cl *Client) PostJson(reqName string, obj_req, obj_resp interface{}) error 
 	}
 
 	if r.Code != 0 {
-		return errors.New(fmt.Sprintf("Code: %d. Descr: %s", r.Code, r.Descr))
+		return errorByCode(e, r.Code, r.Descr)
 	}
 
 	return nil
+}
+
+func errorByCode(e errorMap, code int, descr string) error {
+	var (
+		ok  bool
+		err error
+	)
+
+	switch code {
+	case 1:
+		return ErrUnknownError
+	case 2:
+		return ErrUnknownApiType
+	case 3:
+		return ErrApiDisabledInSettings
+	case 4:
+		return ErrSecretKeyDoesNotMatch
+	case 5:
+		return ErrUnsupportedApiVersion
+	case 6:
+		return ErrUnknownRequestName
+	case 7:
+		return ErrInvalidRequestType
+	case 8:
+		return ErrMissingParameter
+	case 9:
+		return ErrIncorrectParameter
+	case 10:
+		return ErrInternalRequestProcessing
+	}
+
+	err, ok = e[code]
+	if ok {
+		return err
+	}
+
+	return fmt.Errorf("common_api: unknown Code: %d. Descr: %s", code, descr)
 }

@@ -10,7 +10,7 @@ type (
 		// Номер телефона
 		Phone *string `json:"phone,omitempty" validate:"omitempty,max=30"`
 		// Время подачи
-		SourceTime *string `json:"source_time" validate:"omitempty,datetime=20060102150405"`
+		SourceTime *string `json:"source_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Предварительный заказ
 		IsPrior *bool `json:"is_prior,omitempty" validate:"omitempty"`
 		// Заказчик
@@ -36,7 +36,7 @@ type (
 		// Сумма заказа
 		CostOrder *float64 `json:"cost_order,omitempty" validate:"omitempty"`
 		// ИД состояния заказа
-		StateID *int `json:"state_id" validate:"omitempty"`
+		StateID *int `json:"state_id,omitempty" validate:"omitempty"`
 		// ИД скидки
 		DiscountID *int `json:"discount_id,omitempty" validate:"omitempty"`
 		// Автоматически подобрать скидку, если не указана явно
@@ -56,18 +56,57 @@ type (
 		// Использовать специальную проверку перед изменением заказа
 		NeedCustomValidate *bool `json:"need_custom_validate,omitempty" validate:"omitempty"`
 	}
+
+	UpdateOrderResponse struct {
+		// Текст ошибки для пользователя
+		Message string `json:"message"`
+	}
 )
 
 // Изменение информации по заказу
-func (cl *Client) UpdateOrder(req UpdateOrderRequest) (EmptyResponse, error) {
-	var response = EmptyResponse{}
+func (cl *Client) UpdateOrder(req UpdateOrderRequest) (UpdateOrderResponse, error) {
+	var response = UpdateOrderResponse{}
 
 	err := validator.Validate(req)
 	if err != nil {
 		return response, err
 	}
 
-	err = cl.PostJson("update_order", req, &response)
+	/*
+		100	Заказ не найден
+		101	Состояние заказа не найдено
+		102	Тариф не найден
+		103	Скидка не найдена
+		104	Группа экипажа не найдена
+		105	Служба не найдена
+		106	Клиент не найден
+		107 Изменение состояния не соответствует необходимым условиям
+		108	Параметр заказа не найден
+		109	Атрибут не может быть привязан к заказу
+		110	Ошибка специальной проверки заказа перед изменением. В ответе будет возвращаться:
+		 "data": {
+		   "message":"Текст ошибки для пользователя."
+		 }
+		111	Недостаточно средств на безналичном счете клиента в ТМ
+		112	Для клиента запрещена оплата заказа наличными. Клиент должен максимально использовать в заказе безналичную оплату (оплату с основного счета)
+	*/
+	e := errorMap{
+		100: ErrOrderNotFound,
+		101: ErrOrderStateNotFound,
+		102: ErrTariffNotFound,
+		103: ErrDiscountNotFound,
+		104: ErrCrewNotFound,
+		105: ErrUdsNotFound,
+		106: ErrClientNotFound,
+		107: ErrStateCannotBeChanged,
+		108: ErrOrderParameterNotFound,
+		109: ErrAttributeCannotBeBoundOrder,
+		110: ErrSpecialOrderCheck,
+		111: ErrInsufficientFundsCashless,
+		112: ErrCashPaymentNotAllowed,
+	}
+
+	err = cl.PostJson("update_order", e, req, &response)
 
 	return response, err
 }

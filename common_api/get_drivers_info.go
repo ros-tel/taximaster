@@ -37,7 +37,7 @@ func (cl *Client) GetDriversInfo(req GetDriversInfoRequest) (GetDriversInfoRespo
 		v.Add("dismissed_drivers", "true")
 	}
 
-	err = cl.Get("get_drivers_info", v, &response)
+	err = cl.Get("get_drivers_info", errorMap{}, v, &response)
 
 	return response, err
 }

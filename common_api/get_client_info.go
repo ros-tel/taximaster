@@ -155,7 +155,14 @@ func (cl *Client) GetClientInfo(req GetClientInfoRequest) (GetClientInfoResponse
 	v := url.Values{}
 	v.Add("client_id", strconv.Itoa(req.ClientID))
 
-	err = cl.Get("get_client_info", v, &response)
+	/*
+		100 Не найден клиент
+	*/
+	e := errorMap{
+		100: ErrClientNotFound,
+	}
+
+	err = cl.Get("get_client_info", e, v, &response)
 
 	return response, err
 }

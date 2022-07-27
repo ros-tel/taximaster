@@ -33,7 +33,7 @@ func (cl *Client) GetCrewsInfo(req GetCrewsInfoRequest) (GetCrewsInfoResponse, e
 		v.Add("not_working_crews", "true")
 	}
 
-	err = cl.Get("get_crews_info", v, &response)
+	err = cl.Get("get_crews_info", errorMap{}, v, &response)
 
 	return response, err
 }

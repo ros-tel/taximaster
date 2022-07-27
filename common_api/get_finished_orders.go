@@ -75,7 +75,7 @@ func (cl *Client) GetFinishedOrders(req GetFinishedOrdersRequest) (GetFinishedOr
 		v.Add("state_ids", req.StateIDs)
 	}
 
-	err = cl.Get("get_finished_orders", v, &response)
+	err = cl.Get("get_finished_orders", errorMap{}, v, &response)
 
 	return response, err
 }

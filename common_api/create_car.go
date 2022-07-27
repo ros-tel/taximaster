@@ -55,7 +55,16 @@ func (cl *Client) CreateCar(req CreateCarRequest) (CreateCarResponse, error) {
 		return response, err
 	}
 
-	err = cl.PostJson("create_car", req, &response)
+	/*
+		100 Автомобиль с ИД=ID имеет такой же позывной=CODE
+		101 Служба ЕДС не найдена
+	*/
+	e := errorMap{
+		100: ErrCarConflictByCode,
+		101: ErrUdsNotFound,
+	}
+
+	err = cl.PostJson("create_car", e, req, &response)
 
 	return response, err
 }

@@ -103,7 +103,22 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 		}
 	}
 
-	err = cl.Post("update_client_info", v, &response)
+	/*
+		100 Клиент с номером телефона=PHONE уже существует
+		101 Клиент с ИД=ID имеет такой же номер телефона=PHONE
+		102 Клиент с логином=LOGIN уже существует
+		103 Группа клиента с ИД=CLIENT_GROUP_ID не найдена
+		104 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
+	*/
+	e := errorMap{
+		100: ErrClientExistsWithPhone,
+		101: ErrClientConflictByPhone,
+		102: ErrClientExistsWithLogin,
+		103: ErrClientGroupNotFound,
+		104: ErrParentClientNotFound,
+	}
+
+	err = cl.Post("update_client_info", e, v, &response)
 
 	return response, err
 }

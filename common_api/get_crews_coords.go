@@ -50,7 +50,14 @@ func (cl *Client) GetCrewsCoords(req GetCrewsCoordsRequest) (GetCrewsCoordsRespo
 		v.Add("crew_id", strconv.Itoa(req.CrewID))
 	}
 
-	err = cl.Get("get_crews_coords", v, &response)
+	/*
+		100 Координаты не найдены
+	*/
+	e := errorMap{
+		100: ErrCoordsNotFound,
+	}
+
+	err = cl.Get("get_crews_coords", e, v, &response)
 
 	return response, err
 }

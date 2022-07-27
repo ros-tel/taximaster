@@ -69,7 +69,14 @@ func (cl *Client) GetDriverInfo(req GetDriverInfoRequest) (GetDriverInfoResponse
 		v.Add("need_photo", "true")
 	}
 
-	err = cl.Get("get_driver_info", v, &response)
+	/*
+		100 Водитель не найден
+	*/
+	e := errorMap{
+		100: ErrDriverNotFound,
+	}
+
+	err = cl.Get("get_driver_info", e, v, &response)
 
 	return response, err
 }

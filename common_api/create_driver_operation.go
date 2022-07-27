@@ -35,7 +35,16 @@ func (cl *Client) CreateDriverOperation(req CreateDriverOperationRequest) (Creat
 		return response, err
 	}
 
-	err = cl.PostJson("create_driver_operation", req, &response)
+	/*
+		100 Водитель не найден
+		101 Не найден тип счета ИД=ACCOUNT_KIND
+	*/
+	e := errorMap{
+		100: ErrDriverNotFound,
+		101: ErrAccountTypeNotFound,
+	}
+
+	err = cl.PostJson("create_driver_operation", e, req, &response)
 
 	return response, err
 }

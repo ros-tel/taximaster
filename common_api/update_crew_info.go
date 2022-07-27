@@ -44,7 +44,28 @@ func (cl *Client) UpdateCrewInfo(req UpdateCrewInfoRequest) (EmptyResponse, erro
 		return response, err
 	}
 
-	err = cl.PostJson("update_crew_info", req, &response)
+	/*
+		100 Автомобиль с ИД=ID не найден
+		101 Водитель с ИД=ID не найден
+		102 Группа экипажа с ИД=ID не найдена
+		103 Параметр с ИД=ID не найден или не может быть привязан к экипажу
+		104 Экипаж с таким водителем и автомобилем уже существует
+		105 Служба ЕДС автомобиля и водителя не совпадает
+		106 Экипаж с ИД=ID не найден
+		107 Экипаж на линии, запрещено редактирование полей: водитель, автомобиль, позывной, группа экипажа, сумма за смену, минимальный баланс, запрет выхода вне запланированной смены.
+	*/
+	e := errorMap{
+		100: ErrCarNotFound,
+		101: ErrDriverNotFound,
+		102: ErrCrewNotFound,
+		103: ErrParameterNotFoundOrCannotBeBoundCrew,
+		104: ErrCrewConflictByDriverAndCar,
+		105: ErrUdsCarAndDriverDoesNotMatch,
+		106: ErrCrewNotFound,
+		107: ErrForbiddenEditCrewOnLine,
+	}
+
+	err = cl.PostJson("update_crew_info", e, req, &response)
 
 	return response, err
 }

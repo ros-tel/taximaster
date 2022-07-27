@@ -67,7 +67,30 @@ func (cl *Client) UpdateDriverInfo(req UpdateDriverInfoRequest) (EmptyResponse, 
 		return response, err
 	}
 
-	err = cl.PostJson("update_driver_info", req, &response)
+	/*
+		100 Автомобиль с ИД=ID не найден
+		101 Служба ЕДС с ИД=ID не найдена
+		102 Параметр с ИД=ID не найден или не может быть привязан к водителю
+		103 Терминальный аккаунт не уникален
+		104 Некорректный терминальный аккаунт
+		105 Водитель с ИД=ID не найден
+		106 Экипаж на линии, запрещено редактирование полей: основной автомобиль, тип работника, служба ЕДС.
+		107 Основной телефон может быть только один
+		108 Водитель должен иметь основной телефон
+	*/
+	e := errorMap{
+		100: ErrCarNotFound,
+		101: ErrUdsNotFound,
+		102: ErrParameterNotFoundOrCannotBeBoundDriver,
+		103: ErrDriverConflictByTerminalAccount,
+		104: ErrTerminalAccountIncorrect,
+		105: ErrDriverNotFound,
+		106: ErrForbiddenEditCrewOnLine,
+		107: ErrDriverConflictByPrimaryPhone,
+		108: ErrDriverRequiredPrimaryPhone,
+	}
+
+	err = cl.PostJson("update_driver_info", e, req, &response)
 
 	return response, err
 }

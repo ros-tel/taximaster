@@ -59,7 +59,14 @@ func (cl *Client) GetCarInfo(req GetCarInfoRequest) (GetCarInfoResponse, error) 
 		v.Add("need_photo", "true")
 	}
 
-	err = cl.Get("get_car_info", v, &response)
+	/*
+		100 Автомобиль не найден
+	*/
+	e := errorMap{
+		100: ErrCarNotFound,
+	}
+
+	err = cl.Get("get_car_info", e, v, &response)
 
 	return response, err
 }

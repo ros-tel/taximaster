@@ -50,7 +50,14 @@ func (cl *Client) AnalyzePhone(req AnalyzePhoneRequest) (AnalyzePhoneResponse, e
 		v.Add("search_in_phones", "true")
 	}
 
-	err = cl.Get("analyze_phone", v, &response)
+	/*
+		100 Телефон не найден
+	*/
+	e := errorMap{
+		100: ErrPhoneNotFound,
+	}
+
+	err = cl.Get("analyze_phone", e, v, &response)
 
 	return response, err
 }

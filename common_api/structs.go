@@ -50,6 +50,8 @@ type (
 	}
 
 	Address struct {
+		// Адрес
+		Address string `json:"address,omitempty"`
 		// Широта адреса
 		Lat float64 `json:"lat"`
 		// Долгота адреса

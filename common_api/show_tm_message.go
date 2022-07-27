@@ -25,7 +25,14 @@ func (cl *Client) ShowTmMessage(req ShowTmMessageRequest) (EmptyResponse, error)
 		return response, err
 	}
 
-	err = cl.PostJson("show_tm_message", req, &response)
+	/*
+		100 Пользователи для отправки сообщения не найдены
+	*/
+	e := errorMap{
+		100: ErrUsersNotFound,
+	}
+
+	err = cl.PostJson("show_tm_message", e, req, &response)
 
 	return response, err
 }

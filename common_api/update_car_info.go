@@ -20,7 +20,7 @@ type (
 		// Государственный номер
 		GosNumber *string `json:"gos_number,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
-		UdsID *int `json:"uds_id,omitempty" validate:"omitempty" validate:"omitempty"`
+		UdsID *int `json:"uds_id,omitempty" validate:"omitempty"`
 		// Фотография автомобиля
 		CarPhoto *string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// Год выпуска
@@ -57,7 +57,20 @@ func (cl *Client) UpdateCarInfo(req UpdateCarInfoRequest) (EmptyResponse, error)
 		return response, err
 	}
 
-	err = cl.PostJson("update_car_info", req, &response)
+	/*
+		101 Служба ЕДС не найдена
+		102 Автомобиль с ИД=ID не найден
+		103 Экипаж на линии, запрещено редактирование полей: марка, модель, краткое наименование, цвет, гос. номер, служба ЕДС.
+		104 Параметр с ИД=ID не найден или не может быть привязан к автомобилю
+	*/
+	e := errorMap{
+		101: ErrUdsNotFound,
+		102: ErrCarNotFound,
+		103: ErrForbiddenEditCrewOnLine,
+		104: ErrParameterNotFoundOrCannotBeBoundCar,
+	}
+
+	err = cl.PostJson("update_car_info", e, req, &response)
 
 	return response, err
 }

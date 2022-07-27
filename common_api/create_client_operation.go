@@ -69,7 +69,16 @@ func (cl *Client) CreateClientOperation(req CreateClientOperationRequest) (Creat
 		v.Add("account_kind", strconv.Itoa(req.AccountKind))
 	}
 
-	err = cl.Post("create_client_operation", v, &response)
+	/*
+		100 Не найден клиент
+		101 Не найден тип счета ИД=ACCOUNT_KIND
+	*/
+	e := errorMap{
+		100: ErrClientNotFound,
+		101: ErrAccountTypeNotFound,
+	}
+
+	err = cl.Post("create_client_operation", e, v, &response)
 
 	return response, err
 }
