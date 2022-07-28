@@ -34,6 +34,8 @@ type (
 		SearchIn2Gis bool `validate:"omitempty"`
 		// Искать адреса в TMGeoService (по умолчанию = false)
 		SearchInTmGeoService bool `validate:"omitempty"`
+		// Искать адреса в Map.md (по умолчанию = false)
+		SearchInMapMd bool `validate:"omitempty"`
 	}
 
 	GetAddressesLikeResponse struct {
@@ -116,6 +118,9 @@ func (cl *Client) GetAddressesLike(req GetAddressesLikeRequest) (GetAddressesLik
 	}
 	if req.SearchInTmGeoService {
 		v.Add("search_in_tmgeoservice", "true")
+	}
+	if req.SearchInMapMd {
+		v.Add("search_in_mapmd", "true")
 	}
 
 	/*
