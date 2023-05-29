@@ -70,10 +70,6 @@ type (
 		DriverTimeCount int `xml:"DRIVER_TIMECOUNT"`
 		// Время оставшееся до подачи в минутах
 		SourceTimecount int `xml:"SOURCE_TIMECOUNT"`
-		// Запись с информацией о цвете
-		SoundColor string `xml:"SOUND_COLOR"`
-		// Запись с информацией о марке автомобиля
-		SoundMark string `xml:"SOUND_MARK"`
 		// Государственный номер автомобиля
 		GosNumber string `xml:"GOSNUMBER"`
 		// Цвет автомобиля

@@ -18,10 +18,6 @@ type (
 	GetInfoByOrderIDResponse struct {
 		// Время пути водителя до адреса подачи в минутах
 		DriverTimeCount int `xml:"DRIVER_TIMECOUNT"`
-		// Запись с информацией о цвете
-		SoundColor string `xml:"SOUND_COLOR"`
-		// Запись с информацией о марке автомобиля
-		SoundMark string `xml:"SOUND_MARK"`
 		// Государственный номер автомобиля
 		GosNumber string `xml:"GOSNUMBER"`
 		// Цвет автомобиля
