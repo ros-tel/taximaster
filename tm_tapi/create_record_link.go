@@ -9,22 +9,32 @@ import (
 
 type (
 	CreateRecordLinkRequest struct {
-		// Дата записи
-		RecordDate string `validate:"required,datetime=20060102150405"`
-		// Продолжительность записи (в секундах)
-		RecordLength int `validate:"required"`
-		// Путь к файлу записи
-		FilePath string `validate:"required,max=255"`
-
 		// 0 - Исходящий
 		// 1 - Входящий
-		CallType int `validate:"omitempty,eq=0|eq=1"`
-		// Логин пользователя Такси-Мастер
-		UserLogin string `validate:"omitempty"`
+		CallType int `validate:"required,eq=0|eq=1"`
+
 		// ИД звонка (необязателен, если указан PHONE)
 		CallID string `validate:"omitempty,max=60"`
 		// 	Номер телефона (необязателен, если указан CALL_ID)
 		Phone string `validate:"omitempty,max=16"`
+
+		// Дата записи
+		RecordDate string `validate:"omitempty,datetime=20060102150405"`
+		// Продолжительность записи (в секундах)
+		RecordLength int `validate:"omitempty"`
+		// Путь к файлу записи
+		FilePath string `validate:"omitempty,max=255"`
+		// Логин пользователя Такси-Мастер
+		UserLogin string `validate:"omitempty"`
+		// Результат звонка, возможны следующие значения, default(success)
+		// success - успешный,
+		// no_answer - не дозвонились,
+		// answered - ответили,
+		// missed - пропущен,
+		// transfered - переведен,
+		// broke_off - сброшен,
+		// other_user_answered - принят другим оператором.
+		CallResult string `validate:"omitempty,eq=success|eq=no_answer|eq=answered|eq=missed|eq=transfered|eq=broke_off|eq=other_user_answered"`
 	}
 
 	CreateRecordLinkResponse struct {
@@ -56,6 +66,9 @@ func (cl *Client) CreateRecordLink(req CreateRecordLinkRequest) (CreateRecordLin
 	}
 	v.Add("FILE_PATH", req.FilePath)
 	v.Add("CALL_TYPE", strconv.Itoa(req.CallType))
+	if req.CallResult != "" {
+		v.Add("CALL_RESULT", req.CallResult)
+	}
 
 	err = cl.Post("create_record_link", v, &response)
 
