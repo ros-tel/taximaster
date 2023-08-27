@@ -11,15 +11,15 @@ type (
 	CreateRecordLinkRequest struct {
 		// 0 - Исходящий
 		// 1 - Входящий
-		CallType int `validate:"required,eq=0|eq=1"`
+		CallType int `validate:"omitempty,eq=0|eq=1"`
 
 		// ИД звонка (необязателен, если указан PHONE)
 		CallID string `validate:"omitempty,max=60"`
 		// 	Номер телефона (необязателен, если указан CALL_ID)
 		Phone string `validate:"omitempty,max=16"`
 
-		// Дата записи
-		RecordDate string `validate:"omitempty,datetime=20060102150405"`
+		// Дата записи в формате ДДММГГГГччммсс
+		RecordDate string `validate:"omitempty,datetime=02012006150405"`
 		// Продолжительность записи (в секундах)
 		RecordLength int `validate:"omitempty"`
 		// Путь к файлу записи
