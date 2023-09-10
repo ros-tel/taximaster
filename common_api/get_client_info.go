@@ -11,6 +11,10 @@ type (
 	GetClientInfoRequest struct {
 		// ИД клиента
 		ClientID int `validate:"required"`
+
+		// Список возвращаемых полей через запятую.
+		// Для полей списка сотрудников, запрашиваемого клиента, названия начинаются с "employees.", например: "employees.name"
+		Fields string `validate:"omitempty"`
 	}
 
 	GetClientInfoResponse struct {
@@ -140,6 +144,8 @@ type (
 		} `json:"employees"`
 		// Массив счетов клиента
 		Accounts []Account `json:"accounts"`
+		// Массив значений атрибутов. Возвращается, только если явно запросили в фильтре полей "attribute_values" или "employees.attribute_values" для сотрудников
+		AttributeValues []AttributeValue `json:"attribute_values"`
 	}
 )
 
@@ -154,6 +160,10 @@ func (cl *Client) GetClientInfo(req GetClientInfoRequest) (GetClientInfoResponse
 
 	v := url.Values{}
 	v.Add("client_id", strconv.Itoa(req.ClientID))
+
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
+	}
 
 	/*
 		100 Не найден клиент

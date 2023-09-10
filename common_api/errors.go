@@ -63,22 +63,30 @@ var (
 
 	ErrTerminalAccountIncorrect = errors.New("common_api: Некорректный терминальный аккаунт")
 
+	ErrConflictByPrimaryPhone = errors.New("common_api: Основной телефон может быть только один")
+
+	ErrDuplicatePhoneNumberInTheList = errors.New("common_api: Дублирование номера телефона в списке")
+
+	ErrPasswordDoesNotComplyWithPasswordPolicy = errors.New("common_api: Пароль не соответствует политике паролей")
+
 	ErrCarConflictByCode               = errors.New("common_api: Автомобиль имеет такой же позывной")
 	ErrCrewConflictByDriverAndCar      = errors.New("common_api: Экипаж с таким водителем и автомобилем уже существует")
 	ErrDriverConflictByTerminalAccount = errors.New("common_api: Терминальный аккаунт не уникален")
-	ErrDriverConflictByPrimaryPhone    = errors.New("common_api: Основной телефон может быть только один")
 	ErrDriverRequiredPrimaryPhone      = errors.New("common_api: Водитель должен иметь основной телефон")
-	ErrClientConflictByPhone           = errors.New("common_api: Клиент имеет такой же номер телефона")
 
-	ErrClientExistsWithPhone    = errors.New("common_api: Клиент с таким номером телефона уже существует")
-	ErrClientExistsWithLogin    = errors.New("common_api: Клиент с таким логином уже существует")
+	ErrClientConflictByPhone      = errors.New("common_api: Клиент имеет такой же номер телефона")
+	ErrClientExistsWithPhone      = errors.New("common_api: Клиент с таким номером телефона уже существует")
+	ErrClientExistsWithLogin      = errors.New("common_api: Клиент с таким логином уже существует")
+	ErrClientRequiredPrimaryPhone = errors.New("common_api: Клиент должен иметь основной телефон")
+
 	ErrOrderExistsWithParametrs = errors.New("common_api: Заказ с такими параметрами уже создан")
 
 	ErrForbiddenEditCrewOnLine     = errors.New("common_api: Запрещено редактирование у экипажа на линии")
 	ErrUdsCarAndDriverDoesNotMatch = errors.New("common_api: Служба ЕДС автомобиля и водителя не совпадает")
 
-	ErrAttributeNotFound           = errors.New("common_api: Атрибут не найден")
-	ErrAttributeCannotBeBoundOrder = errors.New("common_api: Атрибут не может быть привязан к заказу")
+	ErrAttributeNotFound            = errors.New("common_api: Атрибут не найден")
+	ErrAttributeCannotBeBoundOrder  = errors.New("common_api: Атрибут не может быть привязан к заказу")
+	ErrAttributeCannotBeBoundClient = errors.New("common_api: Атрибут не может быть привязан к клиенту")
 
 	ErrParameterNotFoundOrCannotBeBoundCrew   = errors.New("common_api: Параметр не найден или не может быть привязан к экипажу")
 	ErrParameterNotFoundOrCannotBeBoundCar    = errors.New("common_api: Параметр не найден или не может быть привязан к автомобилю")

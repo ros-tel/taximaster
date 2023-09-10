@@ -21,7 +21,7 @@ type (
 		// Номера телефонов (через запятую)
 		Phones string `validate:"omitempty"`
 		// ИД группы клиента
-		ClientGroup int `validate:"omitempty"`
+		ClientGroupID int `validate:"omitempty"`
 		// ИД клиента-родителя
 		ParentID int `validate:"omitempty"`
 		// Домашний адрес
@@ -67,8 +67,8 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 	if req.Phones != "" {
 		v.Add("phones", req.Phones)
 	}
-	if req.ClientGroup > 0 {
-		v.Add("client_group", strconv.Itoa(req.ClientGroup))
+	if req.ClientGroupID > 0 {
+		v.Add("client_group_id", strconv.Itoa(req.ClientGroupID))
 	}
 	if req.ParentID > 0 {
 		v.Add("parent_id", strconv.Itoa(req.ParentID))
@@ -109,6 +109,7 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 		102 Клиент с логином=LOGIN уже существует
 		103 Группа клиента с ИД=CLIENT_GROUP_ID не найдена
 		104 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
+		109 Пароль клиента не соответствует политике паролей
 	*/
 	e := errorMap{
 		100: ErrClientExistsWithPhone,
@@ -116,6 +117,7 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 		102: ErrClientExistsWithLogin,
 		103: ErrClientGroupNotFound,
 		104: ErrParentClientNotFound,
+		109: ErrPasswordDoesNotComplyWithPasswordPolicy,
 	}
 
 	err = cl.Post("update_client_info", e, v, &response)

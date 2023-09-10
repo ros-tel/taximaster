@@ -74,7 +74,7 @@ func (cl *Client) CreateDriver(req CreateDriverRequest) (CreateDriverResponse, e
 		102: ErrParameterNotFoundOrCannotBeBoundDriver,
 		103: ErrDriverConflictByTerminalAccount,
 		104: ErrTerminalAccountIncorrect,
-		107: ErrDriverConflictByPrimaryPhone,
+		107: ErrConflictByPrimaryPhone,
 		108: ErrDriverRequiredPrimaryPhone,
 	}
 

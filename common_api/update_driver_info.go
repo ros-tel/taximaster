@@ -86,7 +86,7 @@ func (cl *Client) UpdateDriverInfo(req UpdateDriverInfoRequest) (EmptyResponse, 
 		104: ErrTerminalAccountIncorrect,
 		105: ErrDriverNotFound,
 		106: ErrForbiddenEditCrewOnLine,
-		107: ErrDriverConflictByPrimaryPhone,
+		107: ErrConflictByPrimaryPhone,
 		108: ErrDriverRequiredPrimaryPhone,
 	}
 
