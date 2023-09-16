@@ -32,11 +32,13 @@ type (
 		StateType string `validate:"omitempty,eq=all|eq=finished|eq=aborted"`
 		// Список состояний заказа через точку с запятой, пример: "1;2;3"
 		StateIDs string `validate:"omitempty"`
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetFinishedOrdersResponse struct {
 		// Массив с информацией по заказам
-		Orders []GetOrderStateResponse `json:"orders"`
+		Orders []GetCurrentOrdersArray `json:"orders"`
 	}
 )
 
@@ -73,6 +75,9 @@ func (cl *Client) GetFinishedOrders(req GetFinishedOrdersRequest) (GetFinishedOr
 	}
 	if req.StateIDs != "" {
 		v.Add("state_ids", req.StateIDs)
+	}
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
 	}
 
 	err = cl.Get("get_finished_orders", errorMap{}, v, &response)
