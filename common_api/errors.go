@@ -91,4 +91,8 @@ var (
 	ErrParameterNotFoundOrCannotBeBoundCrew   = errors.New("common_api: Параметр не найден или не может быть привязан к экипажу")
 	ErrParameterNotFoundOrCannotBeBoundCar    = errors.New("common_api: Параметр не найден или не может быть привязан к автомобилю")
 	ErrParameterNotFoundOrCannotBeBoundDriver = errors.New("common_api: Параметр не найден или не может быть привязан к водителю")
+
+	ErrPystemEventBadType   = errors.New("common_api: У системного события тип не \"По запросу CommonAPI\"")
+	ErrSystemEventNotFound  = errors.New("common_api: Системное событие не найдено")
+	ErrSystemEventNotActive = errors.New("common_api: Системное событие не активно")
 )
