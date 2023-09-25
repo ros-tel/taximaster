@@ -5,7 +5,7 @@ import "github.com/ros-tel/taximaster/validator"
 type (
 	RunSystemEventRequest struct {
 		// ИД системного события с типом "По запросу CommonAPI"
-		SystemEventID int `validate:"required"`
+		SystemEventID int `json:"system_event_id" validate:"required"`
 	}
 )
 
