@@ -8,14 +8,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 )
 
 type (
 	Client struct {
-		c      *http.Client
-		addr   string
-		apiKey []byte
+		c       *http.Client
+		addr    string
+		apiKey  []byte
+		user_id *int
 	}
 
 	Response struct {
@@ -28,7 +30,7 @@ type (
 	}
 )
 
-func NewClient(addr, key string) *Client {
+func NewClient(addr, key string, id *int) *Client {
 	return &Client{
 		c: &http.Client{
 			Timeout: 15 * time.Second,
@@ -41,9 +43,35 @@ func NewClient(addr, key string) *Client {
 				DisableCompression: true,
 			},
 		},
-		addr:   addr,
-		apiKey: []byte(key),
+		addr:    addr,
+		apiKey:  []byte(key),
+		user_id: id,
 	}
+}
+
+func (cl *Client) invoke(e errorMap, req *http.Request, obj_resp interface{}) error {
+	if cl.user_id != nil {
+		req.Header.Add("X-User-Id", strconv.Itoa(*cl.user_id))
+	}
+
+	resp, err := cl.c.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	decoder := json.NewDecoder(resp.Body)
+	var r = Response{Data: obj_resp}
+	err = decoder.Decode(&r)
+	if err != nil {
+		return err
+	}
+
+	if r.Code != 0 {
+		return errorByCode(e, r.Code, r.Descr)
+	}
+
+	return nil
 }
 
 func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
@@ -62,24 +90,7 @@ func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp in
 	}
 	req.Header.Add("Signature", fmt.Sprintf("%x", md5.Sum(append([]byte(request)[:], cl.apiKey[:]...))))
 
-	resp, err := cl.c.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	var r = Response{Data: obj_resp}
-	err = decoder.Decode(&r)
-	if err != nil {
-		return err
-	}
-
-	if r.Code != 0 {
-		return errorByCode(e, r.Code, r.Descr)
-	}
-
-	return nil
+	return cl.invoke(e, req, obj_resp)
 }
 
 func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
@@ -94,24 +105,7 @@ func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp i
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Signature", fmt.Sprintf("%x", md5.Sum(append(body[:], cl.apiKey[:]...))))
 
-	resp, err := cl.c.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	var r = Response{Data: obj_resp}
-	err = decoder.Decode(&r)
-	if err != nil {
-		return err
-	}
-
-	if r.Code != 0 {
-		return errorByCode(e, r.Code, r.Descr)
-	}
-
-	return nil
+	return cl.invoke(e, req, obj_resp)
 }
 
 func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp interface{}) error {
@@ -129,24 +123,7 @@ func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp interfa
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Signature", fmt.Sprintf("%x", md5.Sum(append(body[:], cl.apiKey[:]...))))
 
-	resp, err := cl.c.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	var r = Response{Data: obj_resp}
-	err = decoder.Decode(&r)
-	if err != nil {
-		return err
-	}
-
-	if r.Code != 0 {
-		return errorByCode(e, r.Code, r.Descr)
-	}
-
-	return nil
+	return cl.invoke(e, req, obj_resp)
 }
 
 func errorByCode(e errorMap, code int, descr string) error {
@@ -176,6 +153,10 @@ func errorByCode(e errorMap, code int, descr string) error {
 		return ErrIncorrectParameter
 	case 10:
 		return ErrInternalRequestProcessing
+	case 13:
+		return ErrUserCommonAPINotFound
+	case 14:
+		return ErrRequestNotAvailableToCommonAPIUser
 	}
 
 	err, ok = e[code]

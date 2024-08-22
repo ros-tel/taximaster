@@ -26,6 +26,10 @@ type (
 			Lat float64 `json:"lat"`
 			// Широта
 			Lon float64 `json:"lon"`
+			// Скорость движения, км/ч
+			Speed int `json:"speed"`
+			// Направление движения (0-Север, 90-Восток, 180-Юг, 270-Запад, -1-не задано)
+			Direction int `json:"direction"`
 			// Тип состояния экипажа. Может принимать значения:
 			// - "not_available" - экипаж не на линии
 			// - "waiting" - экипаж свободен, ожидает заказы
@@ -37,16 +41,14 @@ type (
 )
 
 // Запрос координат экипажей
-func (cl *Client) GetCrewsCoords(req GetCrewsCoordsRequest) (GetCrewsCoordsResponse, error) {
-	var response = GetCrewsCoordsResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetCrewsCoords(req GetCrewsCoordsRequest) (response GetCrewsCoordsResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
-	if req.CrewID > 0 {
+	if req.CrewID != 0 {
 		v.Add("crew_id", strconv.Itoa(req.CrewID))
 	}
 
@@ -59,5 +61,5 @@ func (cl *Client) GetCrewsCoords(req GetCrewsCoordsRequest) (GetCrewsCoordsRespo
 
 	err = cl.Get("get_crews_coords", e, v, &response)
 
-	return response, err
+	return
 }

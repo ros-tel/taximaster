@@ -13,8 +13,6 @@ type (
 
 		// Позывной экипажа
 		Code string `json:"code,omitempty" validate:"omitempty"`
-		// Используется списания за смену
-		UseShifts bool `json:"use_shifts,omitempty" validate:"omitempty"`
 		// Сумма, списываемая за смену
 		WorkShiftSum float64 `json:"work_shift_sum,omitempty" validate:"omitempty"`
 		// Минимальный баланс, при котором можно выйти на смену
@@ -30,21 +28,20 @@ type (
 		// Массив параметров экипажа. Устарело. Рекомендуется использовать параметр attribute_values
 		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
-		AttributeValues *[]AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
 	}
 
 	CreateCrewResponse struct {
+		// ИД созданного экипажа
 		CrewID int `json:"crew_id"`
 	}
 )
 
 // Создание экипажа
-func (cl *Client) CreateCrew(req CreateCrewRequest) (CreateCrewResponse, error) {
-	var response = CreateCrewResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) CreateCrew(req CreateCrewRequest) (response CreateCrewResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
@@ -66,5 +63,5 @@ func (cl *Client) CreateCrew(req CreateCrewRequest) (CreateCrewResponse, error) 
 
 	err = cl.PostJson("create_crew", e, req, &response)
 
-	return response, err
+	return
 }

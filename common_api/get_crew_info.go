@@ -11,6 +11,9 @@ type (
 	GetCrewInfoRequest struct {
 		// ИД экипажа
 		CrewID int `validate:"required"`
+
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetCrewInfoResponse struct {
@@ -50,6 +53,8 @@ type (
 		HasLabel bool `json:"has_label"`
 		// Запрет работы вне запланированных смен
 		UsePlanShifts bool `json:"use_plan_shifts"`
+		// Уровень топлива в автомобиле
+		FuelLevel float64 `json:"fuel_level"`
 		// Массив параметров экипажа
 		OrderParams []int `json:"order_params"`
 		// Массив значений атрибутов
@@ -58,16 +63,17 @@ type (
 )
 
 // Запрос информации об экипаже
-func (cl *Client) GetCrewInfo(req GetCrewInfoRequest) (GetCrewInfoResponse, error) {
-	var response = GetCrewInfoResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetCrewInfo(req GetCrewInfoRequest) (response GetCrewInfoResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("crew_id", strconv.Itoa(req.CrewID))
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
+	}
 
 	/*
 		100 Экипаж не найден
@@ -78,5 +84,5 @@ func (cl *Client) GetCrewInfo(req GetCrewInfoRequest) (GetCrewInfoResponse, erro
 
 	err = cl.Get("get_crew_info", e, v, &response)
 
-	return response, err
+	return
 }

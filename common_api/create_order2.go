@@ -10,11 +10,11 @@ type (
 		ClientID int `json:"client_id,omitempty" validate:"omitempty"`
 		// Массив адресов. Первый элемент — адрес подачи(обязательно), последний — адрес назначения, между ними — остановки
 		Addresses []Address `json:"addresses" validate:"required"`
-		// Смещения относительно серверного времени
-		ServerTimeOffset int `json:"server_time_offset" validate:"omitempty"`
 		// Время подачи
 		SourceTime string `json:"source_time" validate:"required,datetime=20060102150405"`
 
+		// Смещения относительно серверного времени
+		ServerTimeOffset int `json:"server_time_offset,omitempty" validate:"omitempty"`
 		// Пассажир
 		Passenger string `json:"passenger,omitempty" validate:"omitempty"`
 		// Телефон для отзвона
@@ -61,6 +61,8 @@ type (
 		NeedCustomValidate bool `json:"need_custom_validate,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
 		AttributeValues *[]AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+		// Тип платежной системы ("qr", либо пусто, если не используется)
+		PaymentPaySystem string `json:"payment_pay_system,omitempty" validate:"omitempty"`
 	}
 
 	CreateOrder2Response struct {
@@ -72,12 +74,10 @@ type (
 )
 
 // Создание нового заказа 2
-func (cl *Client) CreateOrder2(req CreateOrder2Request) (CreateOrder2Response, error) {
-	var response = CreateOrder2Response{}
-
-	err := validator.Validate(req)
+func (cl *Client) CreateOrder2(req CreateOrder2Request) (response CreateOrder2Response, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
@@ -114,7 +114,7 @@ func (cl *Client) CreateOrder2(req CreateOrder2Request) (CreateOrder2Response, e
 		108: ErrOrderParameterNotFound,
 		109: ErrAttributeCannotBeBoundOrder,
 		110: ErrClientBlocked,
-		111: ErrClientwhoCanUseTheirOwnNotFound,
+		111: ErrClientWhoCanUseTheirOwnNotFound,
 		112: ErrCustomerClientBlocked,
 		113: ErrSpecialOrderCheck,
 		114: ErrInsufficientFundsCashless,
@@ -124,5 +124,5 @@ func (cl *Client) CreateOrder2(req CreateOrder2Request) (CreateOrder2Response, e
 
 	err = cl.PostJson("create_order2", e, req, &response)
 
-	return response, err
+	return
 }

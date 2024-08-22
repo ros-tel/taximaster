@@ -1,28 +1,81 @@
 package common_api
 
-import "github.com/ros-tel/taximaster/validator"
+import (
+	"fmt"
+	"net/url"
+	"strconv"
+
+	"github.com/ros-tel/taximaster/validator"
+)
 
 type (
 	ShowTmMessageRequest struct {
 		// Текст сообщения
-		Text string `json:"text" validate:"required"`
+		Text string `validate:"required"`
 
+		// Тип сообщения ("warning", "error", "information", "confirmation"), по умолчанию "information"
+		Type string `validate:"omitempty,eq=warning|eq=error|eq=information|eq=confirmation"`
 		// Заголовок сообщения
-		Header string `json:"header,omitempty" validate:"omitempty"`
+		Header string `validate:"omitempty"`
 		// Скрывать сообщение через, сек. (0 — не скрывать)
-		Timeout int `json:"timeout" validate:"omitempty"`
+		Timeout int `validate:"omitempty"`
 		// Массив пользователей (если не указаны — отправлять всем)
-		Users *[]int `json:"users,omitempty" validate:"omitempty"`
+		Users []int `validate:"omitempty"`
+		// Цвет уведомления в формате RGB: #FFFFFF
+		Color string `validate:"omitempty,iscolor=hexcolor"`
+		// ИД заказа для кнопки открытия карточки в уведомлении
+		OrderID int `validate:"omitempty"`
+		// ИД автомобиля для кнопки открытия карточки в уведомлении
+		CarID int `validate:"omitempty"`
+		// ИД водителя для кнопки открытия карточки в уведомлении
+		DriverID int `validate:"omitempty"`
+		// ИД экипажа для кнопки открытия карточки в уведомлении
+		CrewID int `validate:"omitempty"`
+		// ИД клиента для кнопки открытия карточки в уведомлении
+		ClientID int `validate:"omitempty"`
 	}
 )
 
 // Показать сообщение в ТМ
-func (cl *Client) ShowTmMessage(req ShowTmMessageRequest) (EmptyResponse, error) {
-	var response = EmptyResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) ShowTmMessage(req ShowTmMessageRequest) (response EmptyResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
+	}
+
+	v := url.Values{}
+	v.Add("text", req.Text)
+	if req.Type != "" {
+		v.Add("type", req.Type)
+	}
+	if req.Header != "" {
+		v.Add("header", req.Header)
+	}
+	if req.Timeout != 0 {
+		v.Add("timeout", strconv.Itoa(req.Timeout))
+	}
+	if len(req.Users) != 0 {
+		for _, user := range req.Users {
+			v.Add("users", fmt.Sprint(user))
+		}
+	}
+	if req.Color != "" {
+		v.Add("color", req.Color)
+	}
+	if req.OrderID != 0 {
+		v.Add("order_id", strconv.Itoa(req.OrderID))
+	}
+	if req.CarID != 0 {
+		v.Add("car_id", strconv.Itoa(req.CarID))
+	}
+	if req.DriverID != 0 {
+		v.Add("driver_id", strconv.Itoa(req.DriverID))
+	}
+	if req.CrewID != 0 {
+		v.Add("crew_id", strconv.Itoa(req.CrewID))
+	}
+	if req.ClientID != 0 {
+		v.Add("client_id", strconv.Itoa(req.ClientID))
 	}
 
 	/*
@@ -32,7 +85,7 @@ func (cl *Client) ShowTmMessage(req ShowTmMessageRequest) (EmptyResponse, error)
 		100: ErrUsersNotFound,
 	}
 
-	err = cl.PostJson("show_tm_message", e, req, &response)
+	err = cl.Post("show_tm_message", e, v, &response)
 
-	return response, err
+	return
 }

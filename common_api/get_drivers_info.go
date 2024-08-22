@@ -2,6 +2,7 @@ package common_api
 
 import (
 	"net/url"
+	"strconv"
 
 	"github.com/ros-tel/taximaster/validator"
 )
@@ -9,35 +10,38 @@ import (
 type (
 	GetDriversInfoRequest struct {
 		// Включить в ответ запроса заблокированных водителей
-		LockedDrivers bool `validate:"omitempty"`
+		LockedDrivers *bool `validate:"omitempty"`
 		// Включить в ответ запроса уволенных водителей
-		DismissedDrivers bool `validate:"omitempty"`
+		DismissedDrivers *bool `validate:"omitempty"`
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetDriversInfoResponse struct {
-		// Массив с информацией о водителях
+		// Массив не удаленных водителей
 		DriversInfo []GetDriverInfoResponse `json:"drivers_info"`
 	}
 )
 
 // Запрос списка водителей
-func (cl *Client) GetDriversInfo(req GetDriversInfoRequest) (GetDriversInfoResponse, error) {
-	var response = GetDriversInfoResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetDriversInfo(req GetDriversInfoRequest) (response GetDriversInfoResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
-	if req.LockedDrivers {
-		v.Add("locked_drivers", "true")
+	if req.LockedDrivers != nil {
+		v.Add("locked_drivers", strconv.FormatBool(*req.LockedDrivers))
 	}
-	if req.DismissedDrivers {
-		v.Add("dismissed_drivers", "true")
+	if req.DismissedDrivers != nil {
+		v.Add("dismissed_drivers", strconv.FormatBool(*req.DismissedDrivers))
+	}
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
 	}
 
-	err = cl.Get("get_drivers_info", errorMap{}, v, &response)
+	err = cl.Get("get_drivers_info", nil, v, &response)
 
-	return response, err
+	return
 }

@@ -28,12 +28,10 @@ type (
 )
 
 // Анализ маршрута 2
-func (cl *Client) AnalyzeRoute2(req AnalyzeRoute2Request) (AnalyzeRoute2Response, error) {
-	var response = AnalyzeRoute2Response{}
-
-	err := validator.Validate(req)
+func (cl *Client) AnalyzeRoute2(req AnalyzeRoute2Request) (response AnalyzeRoute2Response, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
@@ -45,5 +43,5 @@ func (cl *Client) AnalyzeRoute2(req AnalyzeRoute2Request) (AnalyzeRoute2Response
 
 	err = cl.PostJson("analyze_route2", e, req, &response)
 
-	return response, err
+	return
 }

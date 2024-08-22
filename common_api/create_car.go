@@ -12,9 +12,9 @@ type (
 		Color string `json:"color" validate:"required"`
 		// Государственный номер
 		GosNumber string `json:"gos_number" validate:"required"`
-
 		// ИД службы ЕДС (обязательное поле, если используется ЕДС, иначе можно не указывать)
 		UdsID int `json:"uds_id,omitempty" validate:"omitempty"`
+
 		// Модель
 		Model string `json:"model,omitempty" validate:"omitempty"`
 		// Краткое название
@@ -33,12 +33,12 @@ type (
 		Permit string `json:"permit,omitempty" validate:"omitempty"`
 		// Описание
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
-		// Фотография автомобиля
-		CarPhoto *string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// Массив параметров автомобиля. Устарело. Рекомендуется использовать параметр attribute_values
-		OrderParams *[]int `json:"order_params,omitempty" validate:"omitempty"`
+		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
+		// Фотография автомобиля
+		CarPhoto string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// Массив значений атрибутов
-		AttributeValues *[]AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
 	}
 
 	CreateCarResponse struct {
@@ -47,24 +47,24 @@ type (
 )
 
 // Создание автомобиля
-func (cl *Client) CreateCar(req CreateCarRequest) (CreateCarResponse, error) {
-	var response = CreateCarResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) CreateCar(req CreateCarRequest) (response CreateCarResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
 		100 Автомобиль с ИД=ID имеет такой же позывной=CODE
 		101 Служба ЕДС не найдена
+		0	Параметр с ИД=ID не найден или не может быть привязан к автомобилю
 	*/
 	e := errorMap{
 		100: ErrCarConflictByCode,
 		101: ErrUdsNotFound,
+		0:   ErrParameterNotFoundOrCannotBeBoundCar,
 	}
 
 	err = cl.PostJson("create_car", e, req, &response)
 
-	return response, err
+	return
 }

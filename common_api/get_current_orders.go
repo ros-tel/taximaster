@@ -19,6 +19,8 @@ type (
 		CrewID int `validate:"omitempty"`
 		// ИД водителя
 		DriverID int `validate:"omitempty"`
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetCurrentOrdersResponse struct {
@@ -71,7 +73,7 @@ type (
 		// Информация по остановкам заказа
 		Stops []Stop `json:"stops"`
 		// Заказчик
-		Cuctomer string `json:"cuctomer"`
+		Customer string `json:"customer"`
 		// Пассажир
 		Passenger string `json:"passenger"`
 		// Номер телефона
@@ -136,6 +138,14 @@ type (
 		Sum float64 `json:"sum"`
 		// Итоговая сумма заказа
 		TotalSum float64 `json:"total_sum"`
+		// Сумма наличными
+		CashSum float64 `json:"cash_sum"`
+		// Сумма безналичными
+		CashlessSum float64 `json:"cashless_sum"`
+		// Сумма бонусами
+		BonusSum float64 `json:"bonus_sum"`
+		// Сумма банковской картой
+		BankCardSum float64 `json:"bank_card_sum"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`
 		// Чек TMDriver. Данный узел выводится только, если по заказу есть чек
@@ -149,34 +159,39 @@ type (
 			// Стоимость элемента расчета
 			Sum string `json:"sum"`
 		} `json:"bill"`
+		// Признак заказа-аукциона
+		IsAuction bool `json:"is_auction"`
+		// Тип платежной системы ("card", "gpay", "apple_pay", "qr", "sber_pay", либо пусто, если не используется)
+		PaymentPaySystem string `json:"payment_pay_system"`
 	}
 )
 
 // Запрос текущих заказов
-func (cl *Client) GetCurrentOrders(req GetCurrentOrdersRequest) (GetCurrentOrdersResponse, error) {
-	var response = GetCurrentOrdersResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetCurrentOrders(req GetCurrentOrdersRequest) (response GetCurrentOrdersResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
 		return response, err
 	}
 
 	v := url.Values{}
 
-	if req.ClientID > 0 {
+	if req.ClientID != 0 {
 		v.Add("client_id", strconv.Itoa(req.ClientID))
 	}
-	if req.ClientEmployeeID > 0 {
+	if req.ClientEmployeeID != 0 {
 		v.Add("client_employee_id", strconv.Itoa(req.ClientEmployeeID))
 	}
 	if req.Phone != "" {
 		v.Add("phone", req.Phone)
 	}
-	if req.CrewID > 0 {
+	if req.CrewID != 0 {
 		v.Add("crew_id", strconv.Itoa(req.CrewID))
 	}
-	if req.DriverID > 0 {
+	if req.DriverID != 0 {
 		v.Add("driver_id", strconv.Itoa(req.DriverID))
+	}
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
 	}
 
 	/*
@@ -190,5 +205,5 @@ func (cl *Client) GetCurrentOrders(req GetCurrentOrdersRequest) (GetCurrentOrder
 
 	err = cl.Get("get_current_orders", e, v, &response)
 
-	return response, err
+	return
 }

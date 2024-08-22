@@ -9,12 +9,10 @@ type (
 	}
 )
 
-func (cl *Client) RunSystemEvent(req interface{}) (EmptyResponse, error) {
-	var response = EmptyResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) RunSystemEvent(req interface{}) (response EmptyResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
@@ -23,12 +21,12 @@ func (cl *Client) RunSystemEvent(req interface{}) (EmptyResponse, error) {
 		102 Системное событие не активно
 	*/
 	e := errorMap{
-		100: ErrPystemEventBadType,
+		100: ErrSystemEventBadType,
 		101: ErrSystemEventNotFound,
 		102: ErrSystemEventNotActive,
 	}
 
 	err = cl.PostJson("run_system_event", e, req, &response)
 
-	return response, err
+	return
 }

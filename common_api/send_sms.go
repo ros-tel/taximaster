@@ -16,19 +16,17 @@ type (
 )
 
 // Создание задачи СМС серверу
-func (cl *Client) SendSms(req SendSmsRequest) (EmptyResponse, error) {
-	var response = EmptyResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) SendSms(req SendSmsRequest) (response EmptyResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("phone", req.Phone)
 	v.Add("message", req.Message)
 
-	err = cl.Post("send_sms", errorMap{}, v, &response)
+	err = cl.Post("send_sms", nil, v, &response)
 
-	return response, err
+	return
 }

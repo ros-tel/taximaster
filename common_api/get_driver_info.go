@@ -13,7 +13,9 @@ type (
 		DriverID int `validate:"required"`
 
 		// Нужна ли фотография водителя
-		NeedPhoto bool `validate:"omitempty"`
+		NeedPhoto *bool `validate:"omitempty"`
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetDriverInfoResponse struct {
@@ -27,7 +29,9 @@ type (
 		Birthday string `json:"birthday"`
 		// ИД основного автомобиля водителя
 		CarID int `json:"car_id"`
-		// Удостоверение водителя
+		// Водительское удостоверение
+		DriverLicense string `json:"driver_license"`
+		// Разрешение на перевозку
 		License string `json:"license"`
 		// Любой неосновной телефон водителя (устаревшее поле)
 		HomePhone string `json:"home_phone"`
@@ -37,7 +41,13 @@ type (
 		IsLocked bool `json:"is_locked"`
 		// Водитель уволен
 		IsDismissed bool `json:"is_dismissed"`
-		// Фото водителя (только если need_photo = true)
+		// Водитель самозанятый
+		SelfEmployed bool `json:"self_employed"`
+		// ИНН водителя
+		Inn string `json:"inn"`
+		// СНИЛС водителя
+		InsuranceNumber string `json:"insurance_number"`
+		// Фото водителя (только если need_photo = true или поле driver_photo указано в списке фильтра полей fields)
 		DriverPhoto string `json:"driver_photo"`
 		// Массив параметров водителя
 		OrderParams []int `json:"order_params"`
@@ -51,22 +61,25 @@ type (
 		Accounts []Account `json:"accounts"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`
+		// Показатель эффективности (KPI) водителя
+		Kpi float64 `json:"kpi"`
 	}
 )
 
 // Запрос информации о водителе
-func (cl *Client) GetDriverInfo(req GetDriverInfoRequest) (GetDriverInfoResponse, error) {
-	var response = GetDriverInfoResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetDriverInfo(req GetDriverInfoRequest) (response GetDriverInfoResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("driver_id", strconv.Itoa(req.DriverID))
-	if req.NeedPhoto {
-		v.Add("need_photo", "true")
+	if req.NeedPhoto != nil {
+		v.Add("need_photo", strconv.FormatBool(*req.NeedPhoto))
+	}
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
 	}
 
 	/*
@@ -78,5 +91,5 @@ func (cl *Client) GetDriverInfo(req GetDriverInfoRequest) (GetDriverInfoResponse
 
 	err = cl.Get("get_driver_info", e, v, &response)
 
-	return response, err
+	return
 }

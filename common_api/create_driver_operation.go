@@ -15,6 +15,8 @@ type (
 
 		// Наименование операции
 		Name string `json:"name,omitempty" validate:"omitempty"`
+		// Время создания операции (если не задано, текущее)  !! Не используется с ТМ 3.7
+		OperTime string `json:"oper_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Комментарий
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
 		// ИД типа счета (0 - основной счет), по умолчанию 0
@@ -27,12 +29,10 @@ type (
 )
 
 // Проведение операции по водителю
-func (cl *Client) CreateDriverOperation(req CreateDriverOperationRequest) (CreateDriverOperationResponse, error) {
-	var response = CreateDriverOperationResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) CreateDriverOperation(req CreateDriverOperationRequest) (response CreateDriverOperationResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	/*
@@ -46,5 +46,5 @@ func (cl *Client) CreateDriverOperation(req CreateDriverOperationRequest) (Creat
 
 	err = cl.PostJson("create_driver_operation", e, req, &response)
 
-	return response, err
+	return
 }
