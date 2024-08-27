@@ -33,11 +33,11 @@ type (
 		// E-mail
 		Email string `validate:"omitempty,email"`
 		// Использовать E-mail для отправки уведомлений по заказу
-		UseEmailInforming bool `validate:"omitempty"`
+		UseEmailInforming *bool `validate:"omitempty"`
 		// Комментарий
 		Comment string `validate:"omitempty"`
 		// Использовать собственный счет для оплаты заказов
-		UseOwnAccount bool `validate:"omitempty"`
+		UseOwnAccount *bool `validate:"omitempty"`
 	}
 
 	RegisterClientResponse struct {
@@ -46,12 +46,10 @@ type (
 )
 
 // Регистрация клиента
-func (cl *Client) RegisterClient(req RegisterClientRequest) (RegisterClientResponse, error) {
-	var response = RegisterClientResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) RegisterClient(req RegisterClientRequest) (response RegisterClientResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
@@ -77,14 +75,14 @@ func (cl *Client) RegisterClient(req RegisterClientRequest) (RegisterClientRespo
 	if req.Email != "" {
 		v.Add("email", req.Email)
 	}
-	if req.UseEmailInforming {
-		v.Add("use_email_informing", "true")
+	if req.UseEmailInforming != nil {
+		v.Add("use_email_informing", strconv.FormatBool(*req.UseEmailInforming))
 	}
 	if req.Comment != "" {
 		v.Add("comment", req.Comment)
 	}
-	if req.UseOwnAccount {
-		v.Add("use_own_account", "true")
+	if req.UseOwnAccount != nil {
+		v.Add("use_own_account", strconv.FormatBool(*req.UseOwnAccount))
 	}
 
 	/*
@@ -92,15 +90,17 @@ func (cl *Client) RegisterClient(req RegisterClientRequest) (RegisterClientRespo
 		101 Клиент с логином=LOGIN уже существует
 		102 Группа клиента с ИД=CLIENT_GROUP не найдена
 		103 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
+		109	Пароль клиента не соответствует политике паролей
 	*/
 	e := errorMap{
 		100: ErrClientConflictByPhone,
 		101: ErrClientExistsWithLogin,
 		102: ErrClientGroupNotFound,
 		103: ErrParentClientNotFound,
+		109: ErrPasswordDoesNotComplyWithPasswordPolicy,
 	}
 
 	err = cl.Post("register_client", e, v, &response)
 
-	return response, err
+	return
 }

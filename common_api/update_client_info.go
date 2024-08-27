@@ -20,10 +20,6 @@ type (
 		Password string `validate:"omitempty,max=60"`
 		// Номера телефонов (через запятую)
 		Phones string `validate:"omitempty"`
-		// ИД группы клиента
-		ClientGroupID int `validate:"omitempty"`
-		// ИД клиента-родителя
-		ParentID int `validate:"omitempty"`
 		// Домашний адрес
 		Address string `validate:"omitempty"`
 		// Дата рождения
@@ -32,24 +28,26 @@ type (
 		// - male - мужской
 		// - female - женский
 		Gender string `validate:"omitempty,eq=male|eq=female"`
+		// ИД клиента-родителя
+		ParentID int `validate:"omitempty"`
+		// ИД группы клиента
+		ClientGroupID int `validate:"omitempty"`
 		// E-mail
 		Email string `validate:"omitempty,email"`
 		// Использовать E-mail для отправки уведомлений по заказу
 		UseEmailInforming *bool `validate:"omitempty"`
 		// Комментарий
-		Comment *string `validate:"omitempty"`
+		Comment string `validate:"omitempty"`
 		// Использовать собственный счет для оплаты заказов
 		UseOwnAccount *bool `validate:"omitempty"`
 	}
 )
 
 // Изменение информации по клиенту
-func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, error) {
-	var response = EmptyResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (response EmptyResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
@@ -86,21 +84,13 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 		v.Add("email", req.Email)
 	}
 	if req.UseEmailInforming != nil {
-		if *req.UseEmailInforming {
-			v.Add("use_email_informing", "true")
-		} else {
-			v.Add("use_email_informing", "false")
-		}
+		v.Add("use_email_informing", strconv.FormatBool(*req.UseEmailInforming))
 	}
-	if req.Comment != nil {
-		v.Add("comment", *req.Comment)
+	if req.Comment != "" {
+		v.Add("comment", req.Comment)
 	}
 	if req.UseOwnAccount != nil {
-		if *req.UseOwnAccount {
-			v.Add("use_own_account", "true")
-		} else {
-			v.Add("use_own_account", "false")
-		}
+		v.Add("use_own_account", strconv.FormatBool(*req.UseOwnAccount))
 	}
 
 	/*
@@ -122,5 +112,5 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (EmptyResponse, 
 
 	err = cl.Post("update_client_info", e, v, &response)
 
-	return response, err
+	return
 }

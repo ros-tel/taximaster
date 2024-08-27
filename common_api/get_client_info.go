@@ -67,8 +67,12 @@ type (
 		IsLocked bool `json:"is_locked"`
 		// Причина блокировка клиента-сотрудника
 		LockDescription string `json:"lock_description"`
+		// Признак использования безналичного счета
+		UseCashlessAccount bool `json:"use_cashless_account"`
 		// Признак использования безналичного расчета по умолчанию для клиента-сотрудника
 		UseCashless bool `json:"use_cashless"`
+		// Признак запрета использования наличных расчетов. Имеет смысл только при use_cashless_account = true и use_cashless = true
+		NoCashPayment bool `json:"no_cash_payment"`
 		// Сколько заказов осталось до призового
 		RemainPrize int `json:"remain_prize"`
 		// E-mail клиента-сотрудника
@@ -77,8 +81,11 @@ type (
 		UseEmailInforming bool `json:"use_email_informing"`
 		// Группа экипажей по умолчанию
 		DefaultCrewGroup int `json:"default_crew_group"`
+		// Использовать собственный счет для оплаты заказа
+		UseOwnAccount bool `json:"use_own_account"`
 		// Комментарий
-		Comment   string `json:"comment"`
+		Comment string `json:"comment"`
+		// Массив сотрудников клиента. Поля аналогичны полям основного клиента, только у сотрудников отсутствует поле employees
 		Employees []struct {
 			// ИД клиента-сотрудника
 			ClientID int `json:"client_id"`
@@ -150,23 +157,20 @@ type (
 )
 
 // Запрос информации по клиенту
-func (cl *Client) GetClientInfo(req GetClientInfoRequest) (GetClientInfoResponse, error) {
-	var response = GetClientInfoResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetClientInfo(req GetClientInfoRequest) (response GetClientInfoResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("client_id", strconv.Itoa(req.ClientID))
-
 	if req.Fields != "" {
 		v.Add("fields", req.Fields)
 	}
 
 	/*
-		100 Не найден клиент
+		100 Не найден клиент ИД=CLIENT_ID
 	*/
 	e := errorMap{
 		100: ErrClientNotFound,
@@ -174,5 +178,5 @@ func (cl *Client) GetClientInfo(req GetClientInfoRequest) (GetClientInfoResponse
 
 	err = cl.Get("get_client_info", e, v, &response)
 
-	return response, err
+	return
 }

@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	cl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key")
+	cl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key", nil)
 
 	res, err := cl.AnalyzePhone(
 		tm.AnalyzePhoneRequest{
@@ -55,7 +55,7 @@ import (
 )
 
 func main() {
-	tmcl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key")
+	tmcl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key", nil)
 	paycl := pay.NewClient("192.168.0.33:8089", "very-secret-pay-api-key")
 
 	// Получение терминального аккаунта водителя

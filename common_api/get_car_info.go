@@ -13,7 +13,9 @@ type (
 		CarID int `validate:"required"`
 
 		// Нужна ли фотография автомобиля
-		NeedPhoto bool `validate:"omitempty"`
+		NeedPhoto *bool `validate:"omitempty"`
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetCarInfoResponse struct {
@@ -37,26 +39,31 @@ type (
 		ProductionYear int `json:"production_year"`
 		// Автомобиль заблокирован
 		IsLocked bool `json:"is_locked"`
+		// Уровень топлива в автомобиле
+		FuelLevel float64 `json:"fuel_level"`
 		// Массив параметров автомобиля. Устарело. Рекомендуется использовать параметр attribute_values
 		OrderParams []int `json:"order_params"`
+		// Фото автомобиля (только если need_photo = true или поле driver_photo указано в списке фильтра полей fields)
+		CarPhoto string `json:"car_photo"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`
 	}
 )
 
 // Запрос информации об автомобиле
-func (cl *Client) GetCarInfo(req GetCarInfoRequest) (GetCarInfoResponse, error) {
-	var response = GetCarInfoResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetCarInfo(req GetCarInfoRequest) (response GetCarInfoResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("car_id", strconv.Itoa(req.CarID))
-	if req.NeedPhoto {
-		v.Add("need_photo", "true")
+	if req.NeedPhoto != nil {
+		v.Add("need_photo", strconv.FormatBool(*req.NeedPhoto))
+	}
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
 	}
 
 	/*
@@ -68,5 +75,5 @@ func (cl *Client) GetCarInfo(req GetCarInfoRequest) (GetCarInfoResponse, error) 
 
 	err = cl.Get("get_car_info", e, v, &response)
 
-	return response, err
+	return
 }

@@ -25,14 +25,14 @@ type (
 		// Тип оплаты:
 		// - cash - наличный
 		// - nocash - безналичный
-		PayType string `validate:"comment,eq=cash|eq=nocash"`
+		PayType string `validate:"omitempty,eq=cash|eq=nocash"`
 		// Операция по бонусному счёту. Данный параметр устарел - рекомендуется использовать "account_kind"
-		BonusOper bool `validate:"omitempty"`
+		BonusOper *bool `validate:"omitempty"`
 		// Тип счета:
 		// - 0 - Основной счет
 		// - 1 - Бонусный счет
 		// - Остальные - нестандартные счета
-		AccountKind int `validate:"omitempty,min=0"`
+		AccountKind *int `validate:"omitempty,min=0"`
 	}
 
 	CreateClientOperationResponse struct {
@@ -41,12 +41,10 @@ type (
 )
 
 // Проведение операции по клиенту
-func (cl *Client) CreateClientOperation(req CreateClientOperationRequest) (CreateClientOperationResponse, error) {
-	var response = CreateClientOperationResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) CreateClientOperation(req CreateClientOperationRequest) (response CreateClientOperationResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
@@ -62,11 +60,11 @@ func (cl *Client) CreateClientOperation(req CreateClientOperationRequest) (Creat
 	if req.PayType != "" {
 		v.Add("pay_type", req.PayType)
 	}
-	if req.BonusOper {
-		v.Add("bonus_oper", "true")
+	if req.BonusOper != nil {
+		v.Add("bonus_oper", strconv.FormatBool(*req.BonusOper))
 	}
-	if req.AccountKind > 0 {
-		v.Add("account_kind", strconv.Itoa(req.AccountKind))
+	if req.AccountKind != nil {
+		v.Add("account_kind", strconv.Itoa(*req.AccountKind))
 	}
 
 	/*
@@ -80,5 +78,5 @@ func (cl *Client) CreateClientOperation(req CreateClientOperationRequest) (Creat
 
 	err = cl.Post("create_client_operation", e, v, &response)
 
-	return response, err
+	return
 }

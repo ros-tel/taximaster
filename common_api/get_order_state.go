@@ -11,6 +11,9 @@ type (
 	GetOrderStateRequest struct {
 		// ИД заказа
 		OrderID int `validate:"required"`
+
+		// Список возвращаемых полей через запятую
+		Fields string `validate:"omitempty"`
 	}
 
 	GetOrderStateResponse struct {
@@ -57,8 +60,12 @@ type (
 		DestinationLon float64 `json:"destination_lon"`
 		// Информация по остановкам заказа
 		Stops []Stop `json:"stops"`
+		// Фактический километраж
+		TripDistance float64 `json:"trip_distance"`
+		// Фактическое время в пути
+		TripTime int `json:"trip_time"`
 		// Заказчик
-		Cuctomer string `json:"cuctomer"`
+		Customer string `json:"customer"`
 		// Пассажир
 		Passenger string `json:"passenger"`
 		// Номер телефона
@@ -123,6 +130,14 @@ type (
 		Sum float64 `json:"sum"`
 		// Итоговая сумма заказа
 		TotalSum float64 `json:"total_sum"`
+		// Сумма наличными
+		CashSum float64 `json:"cash_sum"`
+		// 	Сумма безналичными
+		CashlessSum float64 `json:"cashless_sum"`
+		// Сумма бонусами
+		BonusSum float64 `json:"bonus_sum"`
+		// Сумма банковской картой
+		BankCardSum float64 `json:"bank_card_sum"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`
 		// Чек TMDriver. Данный узел выводится только, если по заказу есть чек
@@ -136,24 +151,38 @@ type (
 			// Стоимость элемента расчета
 			Sum string `json:"sum"`
 		} `json:"bill"`
+		// Фактический маршрут по заказу, выводится только если поле fact_route передали в списке фильтра полей fields
+		FactRoute []struct {
+			// Широта точки маршрута
+			Lat float64 `json:"lat"`
+			// Долгота точки маршрута
+			Lon float64 `json:"lon"`
+			// Время данной точки
+			Time string `json:"time"`
+			// Скорость в данный момент, км/ч
+			Speed int `json:"speed"`
+			// Направление движения, градусы (0 - север, 90 - восток, 180 - юг, 270 - запад)
+			Direction int `json:"direction"`
+		} `json:"fact_route"`
+		// Признак заказа-аукциона
+		IsAuction bool `json:"is_auction"`
+		// Тип платежной системы ("card", "gpay", "apple_pay", "qr", "sber_pay", либо пусто, если не используется).
+		PaymentPaySystem string `json:"payment_pay_system"`
 	}
 )
 
 // Запрос информации о состоянии заказа
-func (cl *Client) GetOrderState(order_id int) (GetOrderStateResponse, error) {
-	req := GetOrderStateRequest{
-		OrderID: order_id,
-	}
-
-	var response = GetOrderStateResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) GetOrderState(req GetOrderStateRequest) (response GetOrderStateResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
 	v.Add("order_id", strconv.Itoa(req.OrderID))
+	if req.Fields != "" {
+		v.Add("fields", req.Fields)
+	}
 
 	/*
 		100 Заказ не найден
@@ -164,5 +193,5 @@ func (cl *Client) GetOrderState(order_id int) (GetOrderStateResponse, error) {
 
 	err = cl.Get("get_order_state", e, v, &response)
 
-	return response, err
+	return
 }

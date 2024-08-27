@@ -30,12 +30,10 @@ type (
 )
 
 // Анализ телефона
-func (cl *Client) AnalyzePhone(req AnalyzePhoneRequest) (AnalyzePhoneResponse, error) {
-	var response = AnalyzePhoneResponse{}
-
-	err := validator.Validate(req)
+func (cl *Client) AnalyzePhone(req AnalyzePhoneRequest) (response AnalyzePhoneResponse, err error) {
+	err = validator.Validate(req)
 	if err != nil {
-		return response, err
+		return
 	}
 
 	v := url.Values{}
@@ -59,5 +57,5 @@ func (cl *Client) AnalyzePhone(req AnalyzePhoneRequest) (AnalyzePhoneResponse, e
 
 	err = cl.Get("analyze_phone", e, v, &response)
 
-	return response, err
+	return
 }

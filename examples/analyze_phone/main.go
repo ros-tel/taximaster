@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	cl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key")
+	cl := tm.NewClient("192.168.0.33:8089", "very-secret-api-key", nil)
 
 	res, err := cl.AnalyzePhone(
 		tm.AnalyzePhoneRequest{
