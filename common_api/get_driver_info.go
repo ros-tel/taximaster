@@ -27,6 +27,8 @@ type (
 		Balance float64 `json:"balance"`
 		// День рождения водителя
 		Birthday string `json:"birthday"`
+		// Табельный номер
+		Number string `json:"number"`
 		// ИД основного автомобиля водителя
 		CarID int `json:"car_id"`
 		// Водительское удостоверение
@@ -37,6 +39,10 @@ type (
 		HomePhone string `json:"home_phone"`
 		// Основной телефон водителя (устаревшее поле)
 		MobilePhone string `json:"mobile_phone"`
+		// Время, до которого временно заблокирован водитель. Если нет блокировки, то null.
+		TimeBlock string `json:"time_block"`
+		// Причина временной блокировки
+		TemporaryBlockReason string `json:"temporary_block_reason"`
 		// Водитель заблокирован
 		IsLocked bool `json:"is_locked"`
 		// Водитель уволен
@@ -47,9 +53,21 @@ type (
 		Inn string `json:"inn"`
 		// СНИЛС водителя
 		InsuranceNumber string `json:"insurance_number"`
+		// ИД службы ЕДС
+		UdsId int `json:"uds_id"`
+		// Паспортные данные
+		Passport string `json:"passport"`
+		// Тип работника (0 - работник компании, 1 - частник)
+		EmployeeType int `json:"employee_type"`
+		// Дата приема на работу
+		StartDate string `json:"start_date"`
+		// Дата окончания договора
+		LicDate string `json:"lic_date"`
+		// Описание
+		Comment string `json:"comment"`
 		// Фото водителя (только если need_photo = true или поле driver_photo указано в списке фильтра полей fields)
 		DriverPhoto string `json:"driver_photo"`
-		// Массив параметров водителя
+		// Массив параметров водителя. Устарело. Рекомендуется использовать параметр attribute_values.
 		OrderParams []int `json:"order_params"`
 		// Массив телефонов водителя
 		Phones []Phone `json:"phones"`

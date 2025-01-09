@@ -34,6 +34,13 @@ type (
 		SearchInTmGeoService *bool `validate:"omitempty"`
 		// Искать адреса в Map.md (по умолчанию = false)
 		SearchInMapMd *bool `validate:"omitempty"`
+		// Искать адреса в DaData (по умолчанию = false)
+		SearchInDadata *bool `validate:"omitempty"`
+		// Признак того, что выполняется поиск уже полностью введенного адреса.
+		// Пока что это влияет только на поиск по карте 2GIS: если признак равен false,
+		// то будет использоваться запрос автодополнения (suggests),
+		// иначе - запрос геокодирования (geocode). По умолчанию = false.
+		IsFullAddress *bool `validate:"omitempty"`
 	}
 
 	GetAddressesLike2Response struct {
@@ -45,6 +52,8 @@ type (
 			// - "google" - Google
 			// - "2gis" - 2GIS
 			// - "tmgeoservice" - TMGeoService
+			// - "mapmd" - Map.md
+			// - "dadata" - DaData
 			AddressSource string `json:"address_source"`
 			// Название города
 			City string `json:"city"`
@@ -102,6 +111,12 @@ func (cl *Client) GetAddressesLike2(req GetAddressesLike2Request) (response GetA
 	}
 	if req.SearchInMapMd != nil {
 		v.Add("search_in_mapmd", strconv.FormatBool(*req.SearchInMapMd))
+	}
+	if req.SearchInDadata != nil {
+		v.Add("search_in_dadata", strconv.FormatBool(*req.SearchInDadata))
+	}
+	if req.IsFullAddress != nil {
+		v.Add("is_full_address", strconv.FormatBool(*req.IsFullAddress))
 	}
 
 	/*

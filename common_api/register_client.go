@@ -86,14 +86,14 @@ func (cl *Client) RegisterClient(req RegisterClientRequest) (response RegisterCl
 	}
 
 	/*
-		100 Клиент с ИД=ID имеет такой же номер телефона=PHONE
+		100 Дублирование номера телефона=PHONE в списке
 		101 Клиент с логином=LOGIN уже существует
 		102 Группа клиента с ИД=CLIENT_GROUP не найдена
 		103 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
 		109	Пароль клиента не соответствует политике паролей
 	*/
 	e := errorMap{
-		100: ErrClientConflictByPhone,
+		100: ErrDuplicatePhoneNumberInTheList,
 		101: ErrClientExistsWithLogin,
 		102: ErrClientGroupNotFound,
 		103: ErrParentClientNotFound,

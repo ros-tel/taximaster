@@ -26,6 +26,8 @@ type (
 		SearchInTmGeoService *bool `validate:"omitempty"`
 		// Искать адреса в Map.md (по умолчанию = false)
 		SearchInMapMd *bool `validate:"omitempty"`
+		// Искать адреса в DaData (по умолчанию = false)
+		SearchInDadata *bool `validate:"omitempty"`
 		// Искать адреса в 2ГИС (по умолчанию = false)
 		SearchIn2Gis *bool `validate:"omitempty"`
 	}
@@ -37,6 +39,7 @@ type (
 		// - "tmgeoservice" - TMGeoService
 		// - "2gis" - 2GIS
 		// - "mapmd" — Map.md
+		// - "dadata" - DaData
 		AddressSource string `json:"address_source"`
 		// Название города
 		City string `json:"city"`
@@ -89,13 +92,16 @@ func (cl *Client) FindNearestAddress(req FindNearestAddressRequest) (response Fi
 	if req.SearchIn2Gis != nil {
 		v.Add("search_in_2gis", strconv.FormatBool(*req.SearchIn2Gis))
 	}
+	if req.SearchInDadata != nil {
+		v.Add("search_in_dadata", strconv.FormatBool(*req.SearchInDadata))
+	}
 
 	/*
-		100 Подходящие адреса не найдены
+		100 Подходящий адрес не найден
 		101 Не указано место для поиска адресов
 	*/
 	e := errorMap{
-		100: ErrNoMatchingAddressesFound,
+		100: ErrNoMatchingAddressFound,
 		101: ErrSearchLocationNotSpecified,
 	}
 

@@ -55,7 +55,7 @@ type (
 		UsePlanShifts bool `json:"use_plan_shifts"`
 		// Уровень топлива в автомобиле
 		FuelLevel float64 `json:"fuel_level"`
-		// Массив параметров экипажа
+		// Массив параметров экипажа. Устарело. Рекомендуется использовать параметр attribute_values.
 		OrderParams []int `json:"order_params"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`

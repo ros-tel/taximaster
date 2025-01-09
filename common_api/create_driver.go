@@ -8,11 +8,11 @@ type (
 		Name string `json:"name" validate:"required"`
 		// ИД основного автомобиля
 		CarID int `json:"car_id" validate:"required"`
-		// Пароль (обязательное поле, если используется сервер связи с водителями)
-		Password string `json:"password,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС (обязательное поле, если используется ЕДС, иначе можно не указывать)
 		UdsID int `json:"uds_id,omitempty" validate:"omitempty"`
 
+		// Пароль. Если не передали пароль, то он будет сгенерирован автоматически.
+		Password string `json:"password,omitempty" validate:"omitempty"`
 		// Неосновной телефон водителя (устаревший параметр)
 		HomePhone string `json:"home_phone,omitempty" validate:"omitempty"`
 		// Основной телефон водителя (устаревший параметр)
@@ -70,7 +70,7 @@ func (cl *Client) CreateDriver(req CreateDriverRequest) (response CreateDriverRe
 	/*
 		100 Автомобиль с ИД=ID не найден
 		101 Служба ЕДС с ИД=ID не найдена
-		102 Параметр с ИД=ID не найден или не может быть привязан к водителю
+		102 Атрибут с ИД=ID не найден или не может быть привязан к водителю
 		103 Терминальный аккаунт не уникален
 		104 Некорректный терминальный аккаунт
 		107 Основной телефон может быть только один
@@ -80,7 +80,7 @@ func (cl *Client) CreateDriver(req CreateDriverRequest) (response CreateDriverRe
 	e := errorMap{
 		100: ErrCarNotFound,
 		101: ErrUdsNotFound,
-		102: ErrParameterNotFoundOrCannotBeBoundDriver,
+		102: ErrAttributeNotFoundOrCannotBeBoundDriver,
 		103: ErrDriverConflictByTerminalAccount,
 		104: ErrTerminalAccountIncorrect,
 		107: ErrConflictByPrimaryPhone,

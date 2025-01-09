@@ -39,8 +39,10 @@ type (
 		TermAccount string `json:"term_account,omitempty" validate:"omitempty"`
 		// Описание
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
-		// Временная блокировка до
+		// Временная блокировка до. Для снятия временной блокировки передать null
 		TimeBlock string `json:"time_block,omitempty" validate:"omitempty,datetime=20060102150405"`
+		// Причина временной блокировки
+		TemporaryBlockReason string `json:"temporary_block_reason,omitempty" validate:"omitempty"`
 		// Заблокирован
 		IsLocked bool `json:"is_locked,omitempty" validate:"omitempty"`
 		// Причина блокировки
@@ -78,7 +80,7 @@ func (cl *Client) UpdateDriverInfo(req UpdateDriverInfoRequest) (response EmptyR
 	/*
 		100 Автомобиль с ИД=ID не найден
 		101 Служба ЕДС с ИД=ID не найдена
-		102 Параметр с ИД=ID не найден или не может быть привязан к водителю
+		102 Атрибут с ИД=ID не найден или не может быть привязан к водителю
 		103 Терминальный аккаунт не уникален
 		104 Некорректный терминальный аккаунт
 		105 Водитель с ИД=ID не найден
@@ -90,7 +92,7 @@ func (cl *Client) UpdateDriverInfo(req UpdateDriverInfoRequest) (response EmptyR
 	e := errorMap{
 		100: ErrCarNotFound,
 		101: ErrUdsNotFound,
-		102: ErrParameterNotFoundOrCannotBeBoundDriver,
+		102: ErrAttributeNotFoundOrCannotBeBoundDriver,
 		103: ErrDriverConflictByTerminalAccount,
 		104: ErrTerminalAccountIncorrect,
 		105: ErrDriverNotFound,

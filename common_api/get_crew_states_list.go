@@ -2,11 +2,11 @@ package common_api
 
 type (
 	GetCrewStatesListResponse struct {
-		// Список параметров заказа
-		OrderParams []struct {
-			// ИД параметра
+		// Список состояний экипажа
+		CrewStates []struct {
+			// ИД состояния
 			ID int `json:"id"`
-			// Название параметра
+			// Название состояния
 			Name string `json:"name"`
 			// Тип состояния. Может принимать значения:
 			// - "waiting" — экипаж свободен
@@ -14,7 +14,7 @@ type (
 			// - "on_order" — экипаж на заказе
 			// - "on_break" — экипаж на перерыве
 			StateType string `json:"state_type"`
-		} `json:"order_params"`
+		} `json:"crew_states"`
 	}
 )
 

@@ -41,6 +41,20 @@ type (
 		IsLocked bool `json:"is_locked"`
 		// Уровень топлива в автомобиле
 		FuelLevel float64 `json:"fuel_level"`
+		// ИД службы ЕДС
+		UdsId int `json:"uds_id"`
+		// Класс автомобиля (A, B, C, ...)
+		CarClass string `json:"car_class"`
+		// VIN
+		Vin string `json:"vin"`
+		// Номер кузова
+		BodyNumber string `json:"body_number"`
+		// Номер двигателя
+		EngineNumber string `json:"engine_number"`
+		// Разрешение на перевозку
+		Permit string `json:"permit"`
+		// Описание
+		Comment string `json:"comment"`
 		// Массив параметров автомобиля. Устарело. Рекомендуется использовать параметр attribute_values
 		OrderParams []int `json:"order_params"`
 		// Фото автомобиля (только если need_photo = true или поле driver_photo указано в списке фильтра полей fields)

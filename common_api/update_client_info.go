@@ -94,16 +94,16 @@ func (cl *Client) UpdateClientInfo(req UpdateClientInfoRequest) (response EmptyR
 	}
 
 	/*
-		100 Клиент с номером телефона=PHONE уже существует
-		101 Клиент с ИД=ID имеет такой же номер телефона=PHONE
+		100 Клиент с ИД=CLIENT_ID не найден
+		101 Дублирование номера телефона=PHONE в списке
 		102 Клиент с логином=LOGIN уже существует
 		103 Группа клиента с ИД=CLIENT_GROUP_ID не найдена
 		104 Клиент указанный в качестве родителя с ИД=PARENT_ID не найден
 		109 Пароль клиента не соответствует политике паролей
 	*/
 	e := errorMap{
-		100: ErrClientExistsWithPhone,
-		101: ErrClientConflictByPhone,
+		100: ErrClientNotFound,
+		101: ErrDuplicatePhoneNumberInTheList,
 		102: ErrClientExistsWithLogin,
 		103: ErrClientGroupNotFound,
 		104: ErrParentClientNotFound,

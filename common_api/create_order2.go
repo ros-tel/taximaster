@@ -13,7 +13,7 @@ type (
 		// Время подачи
 		SourceTime string `json:"source_time" validate:"required,datetime=20060102150405"`
 
-		// Смещения относительно серверного времени
+		// Смещение относительно серверного времени
 		ServerTimeOffset int `json:"server_time_offset,omitempty" validate:"omitempty"`
 		// Пассажир
 		Passenger string `json:"passenger,omitempty" validate:"omitempty"`
@@ -70,6 +70,8 @@ type (
 		OrderID int `json:"order_id"`
 		// Текст ошибки для пользователя
 		Message string `json:"message"`
+		// можно ли создать заказ несмотря на ошибки проверки
+		CanCreateOrder bool `json:"can_create_order"`
 	}
 )
 
@@ -89,14 +91,15 @@ func (cl *Client) CreateOrder2(req CreateOrder2Request) (response CreateOrder2Re
 		105 Район не найден
 		106 Стоянка не найдена
 		107 Сотрудник клиента не найден
-		108 Параметр заказа не найден
+		108	Атрибут заказа не найден
 		109 Атрибут не может быть привязан к заказу
 		110 Клиент заблокирован
 		111 Не найден клиент, который может использовать собственный счет для оплаты заказов
 		112 Сотрудник клиента заблокирован
 		113 Ошибка специальной проверки заказа перед созданием. В ответе будет возвращаться:
 		 "data": {
-		   "message":"Текст ошибки для пользователя."
+		   "message":"Текст ошибки для пользователя.",
+		   "can_create_order":true|false // можно ли создать заказ несмотря на ошибки проверки
 		 }
 		114 Недостаточно средств на безналичном счете клиента в ТМ
 		115 Отрицательный баланс на безналичном счете клиента в ТМ
@@ -111,7 +114,7 @@ func (cl *Client) CreateOrder2(req CreateOrder2Request) (response CreateOrder2Re
 		105: ErrZoneNotFound,
 		106: ErrStopNotFound,
 		107: ErrCustomerClientNotFound,
-		108: ErrOrderParameterNotFound,
+		108: ErrOrderAttributeNotFound,
 		109: ErrAttributeCannotBeBoundOrder,
 		110: ErrClientBlocked,
 		111: ErrClientWhoCanUseTheirOwnNotFound,
