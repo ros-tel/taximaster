@@ -7,7 +7,7 @@ type (
 		// ИД системного события с типом "По запросу CommonAPI".
 		// Если не передан, то system_event_id будет определен исходя из переданного кода системного события.
 		// Обязательно должен передаваться system_event_id или system_event_code
-		SystemEventId int `json:"system_event_id" validate:"required"`
+		SystemEventID int `json:"system_event_id" validate:"required"`
 		// Код системного события с типом "По запросу CommonAPI". Обязательно должен передаваться system_event_id или system_event_code
 		SystemEventCode string `json:"system_event_code" validate:"required"`
 
@@ -22,7 +22,7 @@ type (
 )
 
 // Вызвать системное событие
-func (cl *Client) RunSystemEvent(req RunSystemEventRequest) (response interface{}, err error) {
+func (cl *Client) RunSystemEvent(req interface{}) (response EmptyResponse, err error) {
 	err = validator.Validate(req)
 	if err != nil {
 		return

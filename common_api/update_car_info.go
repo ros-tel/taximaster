@@ -48,7 +48,7 @@ type (
 		// Фотография автомобиля
 		CarPhoto string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// ИД группы экипажей
-		CrewGroupId int `json:"crew_group_id,omitempty" validate:"omitempty"`
+		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
 )
 
