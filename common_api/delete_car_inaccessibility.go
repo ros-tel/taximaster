@@ -14,7 +14,7 @@ type (
 	}
 )
 
-// Регистрация клиента
+// Удаление недоступности автомобиля
 func (cl *Client) DeleteCarInaccessibility(req DeleteCarInaccessibilityRequest) (response EmptyResponse, err error) {
 	err = validator.Validate(req)
 	if err != nil {

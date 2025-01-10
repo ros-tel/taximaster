@@ -14,7 +14,7 @@ type (
 	}
 )
 
-// Регистрация клиента
+// Удаление недоступности водителя
 func (cl *Client) DeleteDriverInaccessibility(req DeleteDriverInaccessibilityRequest) (response EmptyResponse, err error) {
 	err = validator.Validate(req)
 	if err != nil {
@@ -28,7 +28,7 @@ func (cl *Client) DeleteDriverInaccessibility(req DeleteDriverInaccessibilityReq
 		100 Недоступность водителя не найдена
 	*/
 	e := errorMap{
-		100: ErrCarInaccessibilityNotFound,
+		100: ErrDriverInaccessibilityNotFound,
 	}
 
 	err = cl.Post("delete_driver_inaccessibility", e, v, &response)
