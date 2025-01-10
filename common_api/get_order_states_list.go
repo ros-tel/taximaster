@@ -2,11 +2,11 @@ package common_api
 
 type (
 	GetOrderStatesListResponse struct {
-		// Список параметров заказа
-		OrderParams []struct {
-			// ИД параметра
+		// Список состояний заказа
+		OrderStates []struct {
+			// ИД состояния
 			ID int `json:"id"`
-			// Название параметра
+			// Название состояния
 			Name string `json:"name"`
 			// Тип состояния. Может принимать значения:
 			// - "accepted" — заказ принят
@@ -14,7 +14,7 @@ type (
 			// - "finished" — заказ выполнен
 			// - "aborted" — заказ прекращен
 			StateType string `json:"state_type"`
-		} `json:"order_params"`
+		} `json:"order_states"`
 	}
 )
 

@@ -62,4 +62,15 @@ type (
 		// ИД стоянки
 		ParkingID int `json:"parking_id"`
 	}
+
+	Bill struct {
+		// Код элемента расчета
+		Code string `json:"code"`
+		// Наименование элемента расчета
+		Text string `json:"text"`
+		// Значение элемента расчета (количество)
+		Value string `json:"value"`
+		// Стоимость элемента расчета
+		Sum string `json:"sum"`
+	}
 )

@@ -7,6 +7,8 @@ type (
 		// ИД автомобиля
 		CarID int `json:"car_id" validate:"required"`
 
+		// Не проверять, что автомобиль уже на линии
+		DontCheckCarOnShift bool `json:"dont_check_car_on_shift,omitempty" validate:"omitempty"`
 		// Позывной
 		Code string `json:"code,omitempty" validate:"omitempty"`
 		// Марка
@@ -33,7 +35,7 @@ type (
 		Permit string `json:"permit,omitempty" validate:"omitempty"`
 		// Описание
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
-		// Массив параметров автомобиля
+		// Массив параметров автомобиля. Устарело. Рекомендуется использовать параметр attribute_values.
 		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
@@ -45,6 +47,8 @@ type (
 		UdsID int `json:"uds_id,omitempty" validate:"omitempty"`
 		// Фотография автомобиля
 		CarPhoto string `json:"car_photo,omitempty" validate:"omitempty,base64"`
+		// ИД группы экипажей
+		CrewGroupId int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
 )
 
@@ -56,16 +60,18 @@ func (cl *Client) UpdateCarInfo(req UpdateCarInfoRequest) (response EmptyRespons
 	}
 
 	/*
-		101 Служба ЕДС не найдена
-		102 Автомобиль с ИД=ID не найден
-		103 Экипаж на линии, запрещено редактирование полей: марка, модель, краткое наименование, цвет, гос. номер, служба ЕДС.
-		104 Параметр с ИД=ID не найден или не может быть привязан к автомобилю
+		101	Служба ЕДС не найдена
+		102	Автомобиль с ИД=ID не найден
+		103	Экипаж на линии, запрещено редактирование полей: марка, модель, краткое наименование, цвет, гос. номер, служба ЕДС.
+		104	Параметр с ИД=ID не найден или не может быть привязан к автомобилю
+		105	Группа экипажей не найдена
 	*/
 	e := errorMap{
 		101: ErrUdsNotFound,
 		102: ErrCarNotFound,
 		103: ErrForbiddenEditCrewOnLine,
 		104: ErrParameterNotFoundOrCannotBeBoundCar,
+		105: ErrCrewsGroupsNotFound,
 	}
 
 	err = cl.PostJson("update_car_info", e, req, &response)

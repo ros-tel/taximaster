@@ -39,6 +39,8 @@ type (
 		CarPhoto string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+		// ИД группы экипажей
+		CrewGroupId int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
 
 	CreateCarResponse struct {
@@ -54,14 +56,16 @@ func (cl *Client) CreateCar(req CreateCarRequest) (response CreateCarResponse, e
 	}
 
 	/*
-		100 Автомобиль с ИД=ID имеет такой же позывной=CODE
+		100 Автомобиль с ИД=ID имеет такой же позывной=CODE (проверка на дубликат позывного убрана в ТМ 3.14.101)
 		101 Служба ЕДС не найдена
-		0	Параметр с ИД=ID не найден или не может быть привязан к автомобилю
+		104	Атрибут с ИД=ID не найден или не может быть привязан к автомобилю
+		105	Группа экипажей не найдена
 	*/
 	e := errorMap{
 		100: ErrCarConflictByCode,
 		101: ErrUdsNotFound,
-		0:   ErrParameterNotFoundOrCannotBeBoundCar,
+		104: ErrAttributeNotFoundOrCannotBeBoundCar,
+		105: ErrCrewsGroupsNotFound,
 	}
 
 	err = cl.PostJson("create_car", e, req, &response)

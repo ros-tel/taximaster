@@ -22,9 +22,9 @@ type (
 			CrewCode string `json:"crew_code"`
 			// Время получения координат
 			CoordsTime string `json:"coords_time"`
-			// Долгота
-			Lat float64 `json:"lat"`
 			// Широта
+			Lat float64 `json:"lat"`
+			// Долгота
 			Lon float64 `json:"lon"`
 			// Скорость движения, км/ч
 			Speed int `json:"speed"`

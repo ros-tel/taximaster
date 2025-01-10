@@ -134,6 +134,14 @@ type (
 		PriorToCurrentBeforeMinutes int `json:"prior_to_current_before_minutes"`
 		// Номер рейса
 		FlightNumber string `json:"flight_number"`
+		// Признак того, что заказ составной
+		IsCombined bool `json:"is_combined"`
+		// Массив ИД заказов-частей, передается только для составного заказа
+		CombinedOrderPartsIds []int `json:"combined_order_parts_ids"`
+		// Признак того, что заказ является частью составного
+		IsPartOfCombined bool `json:"is_part_of_combined"`
+		// ИД составного заказа, передается, только если заказ является частью составного
+		CombinedOrderId int `json:"combined_order_id"`
 		// Сумма без скидки
 		Sum float64 `json:"sum"`
 		// Итоговая сумма заказа
@@ -149,20 +157,13 @@ type (
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values"`
 		// Чек TMDriver. Данный узел выводится только, если по заказу есть чек
-		Bill []struct {
-			// Код элемента расчета
-			Code string `json:"code"`
-			// Наименование элемента расчета
-			Text string `json:"text"`
-			// Значение элемента расчета (количество)
-			Value string `json:"value"`
-			// Стоимость элемента расчета
-			Sum string `json:"sum"`
-		} `json:"bill"`
+		Bill []Bill `json:"bill"`
 		// Признак заказа-аукциона
 		IsAuction bool `json:"is_auction"`
 		// Тип платежной системы ("card", "gpay", "apple_pay", "qr", "sber_pay", либо пусто, если не используется)
 		PaymentPaySystem string `json:"payment_pay_system"`
+		// Комментарий
+		Comment string `json:"comment"`
 	}
 )
 
