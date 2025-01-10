@@ -54,7 +54,7 @@ type (
 		// СНИЛС водителя
 		InsuranceNumber string `json:"insurance_number"`
 		// ИД службы ЕДС
-		UdsId int `json:"uds_id"`
+		UdsID int `json:"uds_id"`
 		// Паспортные данные
 		Passport string `json:"passport"`
 		// Тип работника (0 - работник компании, 1 - частник)

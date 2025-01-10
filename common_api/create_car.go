@@ -40,7 +40,7 @@ type (
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
 		// ИД группы экипажей
-		CrewGroupId int `json:"crew_group_id,omitempty" validate:"omitempty"`
+		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
 
 	CreateCarResponse struct {

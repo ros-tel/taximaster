@@ -42,7 +42,7 @@ type (
 		// Уровень топлива в автомобиле
 		FuelLevel float64 `json:"fuel_level"`
 		// ИД службы ЕДС
-		UdsId int `json:"uds_id"`
+		UdsID int `json:"uds_id"`
 		// Класс автомобиля (A, B, C, ...)
 		CarClass string `json:"car_class"`
 		// VIN
