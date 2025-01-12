@@ -22,7 +22,7 @@ type (
 		// Массив пользователей (если не указаны — отправлять всем)
 		Users []int `validate:"omitempty"`
 		// Цвет уведомления в формате RGB: #FFFFFF
-		Color string `validate:"omitempty,iscolor=hexcolor"`
+		Color string `validate:"omitempty,hexcolor"`
 		// ИД заказа для кнопки открытия карточки в уведомлении
 		OrderID int `validate:"omitempty"`
 		// ИД автомобиля для кнопки открытия карточки в уведомлении

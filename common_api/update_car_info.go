@@ -23,8 +23,8 @@ type (
 		ShortName string `json:"short_name,omitempty" validate:"omitempty"`
 		// Год выпуска
 		ProductionYear int `json:"production_year,omitempty" validate:"omitempty"`
-		// Класс автомобиля (A, B, C, ...)
-		CarClass string `json:"car_class,omitempty" validate:"omitempty"`
+		// Класс автомобиля (возвращаются ид классов, 0 не задан, а далее цифры соответствуют порядку в списке)
+		CarClass int `json:"car_class,omitempty" validate:"omitempty"`
 		// VIN
 		Vin string `json:"vin,omitempty" validate:"omitempty"`
 		// Номер кузова
