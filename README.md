@@ -12,6 +12,17 @@ $ go get -u github.com/ros-tel/taximaster
 import "github.com/ros-tel/taximaster/common_api"
 ```
 
+## Примечание
+
+Где-то с версии golang 1.20 для правильного использования необходимо добавить в переменное окружение "GODEBUG=tlsrsakex=1"
+
+Например:
+```bash
+export GODEBUG=tlsrsakex=1
+// Или
+GODEBUG=tlsrsakex=1 ./__name_your_app__
+```
+
 ## Примеры
 
 1. Анализ номера телефона
