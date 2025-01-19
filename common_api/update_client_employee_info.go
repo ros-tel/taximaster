@@ -10,7 +10,7 @@ type (
 		// ФИО сотрудника
 		Name string `json:"name,omitempty" validate:"omitempty"`
 		// Признак удаленного сотрудника
-		IsDeleted bool `json:"is_deleted,omitempty" validate:"omitempty"`
+		IsDeleted *bool `json:"is_deleted,omitempty" validate:"omitempty"`
 		// E-mail
 		Email string `json:"email,omitempty" validate:"omitempty,email"`
 		// Использовать E-mail для отправки уведомлений по заказу

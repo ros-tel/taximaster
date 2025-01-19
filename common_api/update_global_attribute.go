@@ -8,7 +8,7 @@ type (
 		ID int `json:"id" validate:"required"`
 
 		// Значение, если тип атрибута "Логический"
-		BoolValue bool `json:"bool_value,omitempty" validate:"omitempty"`
+		BoolValue *bool `json:"bool_value,omitempty" validate:"omitempty"`
 		//  Значение, если тип атрибута:
 		//  - "Число" (непосредственное значение)
 		//  - "Число (выбор из списка)" (непосредственное значение выбранного элемента списка)

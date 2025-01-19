@@ -12,7 +12,7 @@ type (
 		// Время подачи
 		SourceTime string `json:"source_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Предварительный заказ
-		IsPrior bool `json:"is_prior,omitempty" validate:"omitempty"`
+		IsPrior *bool `json:"is_prior,omitempty" validate:"omitempty"`
 		// Заказчик
 		Customer string `json:"customer,omitempty" validate:"omitempty"`
 		// Пассажир
@@ -40,13 +40,13 @@ type (
 		// ИД скидки
 		DiscountID int `json:"discount_id,omitempty" validate:"omitempty"`
 		// Автоматически подобрать скидку, если не указана явно
-		AutoSelectDiscount bool `json:"auto_select_discount,omitempty" validate:"omitempty"`
+		AutoSelectDiscount *bool `json:"auto_select_discount,omitempty" validate:"omitempty"`
 		// Автоматически подобрать тариф, если не указан явно
-		AutoSelectTariff bool `json:"auto_select_tariff,omitempty" validate:"omitempty"`
+		AutoSelectTariff *bool `json:"auto_select_tariff,omitempty" validate:"omitempty"`
 		// Автоматически пересчитать сумму заказа
-		AutoRecalcCost bool `json:"auto_recalc_cost,omitempty" validate:"omitempty"`
+		AutoRecalcCost *bool `json:"auto_recalc_cost,omitempty" validate:"omitempty"`
 		// Автоматически обновить параметры заказа по клиенту и группе клиента
-		AutoUpdateOrderParams bool `json:"auto_update_order_params,omitempty" validate:"omitempty"`
+		AutoUpdateOrderParams *bool `json:"auto_update_order_params,omitempty" validate:"omitempty"`
 		// Email для уведомлений
 		Email string `json:"email,omitempty" validate:"omitempty,email"`
 		// Время перехода из предварительного в текущие заказы, мин
@@ -54,7 +54,7 @@ type (
 		// Номер рейса
 		FlightNumber string `json:"flight_number,omitempty" validate:"omitempty"`
 		// Использовать специальную проверку перед изменением заказа
-		NeedCustomValidate bool `json:"need_custom_validate,omitempty" validate:"omitempty"`
+		NeedCustomValidate *bool `json:"need_custom_validate,omitempty" validate:"omitempty"`
 		// ИД сотрудника, должен быть подчиненным старого ИД клиента в заявке,
 		// если не передавали новый ИД клиента, либо подчиненным нового ИД клиента,
 		// если передали новый ИД клиента

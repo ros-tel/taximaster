@@ -22,7 +22,7 @@ type (
 		// Комментарий
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
 		// Не проверять пересечение с резервированиями
-		DontCheckIntersectionWithReservations bool `json:"dont_check_intersection_with_reservations,omitempty" validate:"omitempty"`
+		DontCheckIntersectionWithReservations *bool `json:"dont_check_intersection_with_reservations,omitempty" validate:"omitempty"`
 	}
 )
 

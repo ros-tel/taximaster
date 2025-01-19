@@ -22,13 +22,13 @@ type (
 		// Время работы, формат: "6.00-10.30, 23:00-00:48"
 		WorkTime string `json:"work_time,omitempty" validate:"omitempty"`
 		// Шашка
-		HasLightHouse bool `json:"has_light_house,omitempty" validate:"omitempty"`
+		HasLightHouse *bool `json:"has_light_house,omitempty" validate:"omitempty"`
 		// Наклейка
-		HasLabel bool `json:"has_label,omitempty" validate:"omitempty"`
+		HasLabel *bool `json:"has_label,omitempty" validate:"omitempty"`
 		// GPS идентификатор экипажа
 		CrewGpsID int `json:"crew_gps_id,omitempty" validate:"omitempty"`
 		// Запрет работы вне запланированных смен
-		UsePlanShifts bool `json:"use_plan_shifts,omitempty" validate:"omitempty"`
+		UsePlanShifts *bool `json:"use_plan_shifts,omitempty" validate:"omitempty"`
 		// Массив параметров экипажа. Устарело. Рекомендуется использовать параметр attribute_values.
 		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов

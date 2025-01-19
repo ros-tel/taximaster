@@ -8,7 +8,7 @@ type (
 		CarID int `json:"car_id" validate:"required"`
 
 		// Не проверять, что автомобиль уже на линии
-		DontCheckCarOnShift bool `json:"dont_check_car_on_shift,omitempty" validate:"omitempty"`
+		DontCheckCarOnShift *bool `json:"dont_check_car_on_shift,omitempty" validate:"omitempty"`
 		// Позывной
 		Code string `json:"code,omitempty" validate:"omitempty"`
 		// Марка
@@ -40,7 +40,7 @@ type (
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
 		// Автомобиль заблокирован
-		IsLocked bool `json:"is_locked,omitempty" validate:"omitempty"`
+		IsLocked *bool `json:"is_locked,omitempty" validate:"omitempty"`
 		// Причина блокировки
 		LockDescription string `json:"lock_description,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
