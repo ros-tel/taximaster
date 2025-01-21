@@ -18,23 +18,23 @@ type (
 		// Государственный номер
 		GosNumber string `json:"gos_number,omitempty" validate:"omitempty"`
 		// Модель
-		Model string `json:"model,omitempty" validate:"omitempty"`
+		Model *string `json:"model,omitempty" validate:"omitempty"`
 		// Краткое название
-		ShortName string `json:"short_name,omitempty" validate:"omitempty"`
+		ShortName *string `json:"short_name,omitempty" validate:"omitempty"`
 		// Год выпуска
-		ProductionYear int `json:"production_year,omitempty" validate:"omitempty"`
+		ProductionYear *int `json:"production_year,omitempty" validate:"omitempty"`
 		// Класс автомобиля (возвращаются ид классов, 0 не задан, а далее цифры соответствуют порядку в списке)
-		CarClass int `json:"car_class,omitempty" validate:"omitempty"`
+		CarClass *int `json:"car_class,omitempty" validate:"omitempty"`
 		// VIN
-		Vin string `json:"vin,omitempty" validate:"omitempty"`
+		Vin *string `json:"vin,omitempty" validate:"omitempty"`
 		// Номер кузова
-		BodyNumber string `json:"body_number,omitempty" validate:"omitempty"`
+		BodyNumber *string `json:"body_number,omitempty" validate:"omitempty"`
 		// Номер двигателя
-		EngineNumber string `json:"engine_number,omitempty" validate:"omitempty"`
+		EngineNumber *string `json:"engine_number,omitempty" validate:"omitempty"`
 		// Разрешение на перевозку
-		Permit string `json:"permit,omitempty" validate:"omitempty"`
+		Permit *string `json:"permit,omitempty" validate:"omitempty"`
 		// Описание
-		Comment string `json:"comment,omitempty" validate:"omitempty"`
+		Comment *string `json:"comment,omitempty" validate:"omitempty"`
 		// Массив параметров автомобиля. Устарело. Рекомендуется использовать параметр attribute_values.
 		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
@@ -42,13 +42,13 @@ type (
 		// Автомобиль заблокирован
 		IsLocked *bool `json:"is_locked,omitempty" validate:"omitempty"`
 		// Причина блокировки
-		LockDescription string `json:"lock_description,omitempty" validate:"omitempty"`
+		LockDescription *string `json:"lock_description,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
-		UdsID int `json:"uds_id,omitempty" validate:"omitempty"`
+		UdsID *int `json:"uds_id,omitempty" validate:"omitempty"`
 		// Фотография автомобиля
-		CarPhoto string `json:"car_photo,omitempty" validate:"omitempty,base64"`
+		CarPhoto *string `json:"car_photo,omitempty" validate:"omitempty,base64"`
 		// ИД группы экипажей
-		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
+		CrewGroupID *int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
 )
 

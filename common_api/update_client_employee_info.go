@@ -12,7 +12,7 @@ type (
 		// Признак удаленного сотрудника
 		IsDeleted *bool `json:"is_deleted,omitempty" validate:"omitempty"`
 		// E-mail
-		Email string `json:"email,omitempty" validate:"omitempty,email"`
+		Email *string `json:"email,omitempty" validate:"omitempty,email"`
 		// Использовать E-mail для отправки уведомлений по заказу
 		UseEmailInforming *bool `json:"use_email_informing,omitempty" validate:"omitempty"`
 		// Массив телефонов сотрудника

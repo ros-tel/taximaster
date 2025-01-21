@@ -14,19 +14,19 @@ type (
 		// ИД группы экипажа
 		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 		// Позывной экипажа
-		Code string `json:"code,omitempty" validate:"omitempty"`
+		Code *string `json:"code,omitempty" validate:"omitempty"`
 		// Сумма, списываемая за смену
-		WorkShiftSum float64 `json:"work_shift_sum,omitempty" validate:"omitempty"`
+		WorkShiftSum *float64 `json:"work_shift_sum,omitempty" validate:"omitempty"`
 		// Минимальный баланс, при котором можно выйти на смену
-		MinBalance int `json:"min_balance,omitempty" validate:"omitempty"`
+		MinBalance *int `json:"min_balance,omitempty" validate:"omitempty"`
 		// Время работы, формат: "6.00-10.30, 23:00-00:48"
-		WorkTime string `json:"work_time,omitempty" validate:"omitempty"`
+		WorkTime *string `json:"work_time,omitempty" validate:"omitempty"`
 		// Шашка
 		HasLightHouse *bool `json:"has_light_house,omitempty" validate:"omitempty"`
 		// Наклейка
 		HasLabel *bool `json:"has_label,omitempty" validate:"omitempty"`
 		// GPS идентификатор экипажа
-		CrewGpsID int `json:"crew_gps_id,omitempty" validate:"omitempty"`
+		CrewGpsID *int `json:"crew_gps_id,omitempty" validate:"omitempty"`
 		// Запрет работы вне запланированных смен
 		UsePlanShifts *bool `json:"use_plan_shifts,omitempty" validate:"omitempty"`
 		// Массив параметров экипажа. Устарело. Рекомендуется использовать параметр attribute_values.
