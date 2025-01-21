@@ -10,9 +10,9 @@ import (
 type (
 	CheckCancelOrderPenaltyRequest struct {
 		// ИД заказа
-		OrderID *int `validate:"required"`
+		OrderID int `validate:"required"`
 		// ИД состояния заказа, в которое переходит заказ при отмене
-		CancelOrderStateID *int `validate:"required"`
+		CancelOrderStateID int `validate:"required"`
 	}
 
 	CheckCancelOrderPenaltyResponse struct {
@@ -29,8 +29,8 @@ func (cl *Client) CheckCancelOrderPenalty(req CheckCancelOrderPenaltyRequest) (r
 	}
 
 	v := url.Values{}
-	v.Add("order_id", strconv.Itoa(*req.OrderID))
-	v.Add("cancel_order_state_id", strconv.Itoa(*req.CancelOrderStateID))
+	v.Add("order_id", strconv.Itoa(req.OrderID))
+	v.Add("cancel_order_state_id", strconv.Itoa(req.CancelOrderStateID))
 
 	/*
 		100	Не найден заказ ИД=order_id
