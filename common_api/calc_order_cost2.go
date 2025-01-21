@@ -5,47 +5,47 @@ import "github.com/ros-tel/taximaster/validator"
 type (
 	CalcOrderCost2Request struct {
 		// ИД заказа
-		OrderID *int `json:"order_id,omitempty" validate:"omitempty"`
+		OrderID int `json:"order_id,omitempty" validate:"omitempty"`
 		// ИД тарифа
-		TariffID *int `json:"tariff_id,omitempty" validate:"omitempty"`
+		TariffID int `json:"tariff_id,omitempty" validate:"omitempty"`
 		// Время подачи
 		SourceTime string `json:"source_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Предварительный заказ
 		IsPrior *bool `json:"is_prior,omitempty" validate:"omitempty"`
 		// ИД клиента
-		ClientID *int `json:"client_id,omitempty" validate:"omitempty"`
+		ClientID int `json:"client_id,omitempty" validate:"omitempty"`
 		// Телефон клиента
 		Phone string `json:"phone,omitempty" validate:"omitempty,max=30"`
 		// ИД скидки
-		DiscountID *int `json:"discount_id,omitempty" validate:"omitempty"`
+		DiscountID int `json:"discount_id,omitempty" validate:"omitempty"`
 		// ИД дисконтной карты
-		DiscCardID *int `json:"disc_card_id,omitempty" validate:"omitempty"`
+		DiscCardID int `json:"disc_card_id,omitempty" validate:"omitempty"`
 		// ИД района подачи
-		SourceZoneID *int `json:"source_zone_id,omitempty" validate:"omitempty"`
+		SourceZoneID int `json:"source_zone_id,omitempty" validate:"omitempty"`
 		// Долгота адреса подачи
 		SourceLon *float64 `json:"source_lon,omitempty" validate:"omitempty"`
 		// Широта адреса подачи
 		SourceLat *float64 `json:"source_lat,omitempty" validate:"omitempty"`
 		// ИД района назначения
-		DestZoneID *int `json:"dest_zone_id,omitempty" validate:"omitempty"`
+		DestZoneID int `json:"dest_zone_id,omitempty" validate:"omitempty"`
 		// Долгота адреса назначения
 		DestLon *float64 `json:"dest_lon,omitempty" validate:"omitempty"`
 		// Широта адреса назначения
 		DestLat *float64 `json:"dest_lat,omitempty" validate:"omitempty"`
 		// Километраж по городу
-		DistanceCity *float64 `json:"distance_city,omitempty" validate:"omitempty"`
+		DistanceCity float64 `json:"distance_city,omitempty" validate:"omitempty"`
 		// Километраж за городом
-		DistanceCountry *float64 `json:"distance_country,omitempty" validate:"omitempty"`
+		DistanceCountry float64 `json:"distance_country,omitempty" validate:"omitempty"`
 		// Километраж до подачи за городом
-		SourceDistanceCountry *float64 `json:"source_distance_country,omitempty" validate:"omitempty"`
+		SourceDistanceCountry float64 `json:"source_distance_country,omitempty" validate:"omitempty"`
 		// Загородный заказ
 		IsCountry *bool `json:"is_country,omitempty" validate:"omitempty"`
 		// Время ожидания посадки клиента в минутах
-		WaitingMinutes *int `json:"waiting_minutes,omitempty" validate:"omitempty"`
+		WaitingMinutes int `json:"waiting_minutes,omitempty" validate:"omitempty"`
 		// Почасовой заказ
 		IsHourly *bool `json:"is_hourly,omitempty" validate:"omitempty"`
 		// Длительность почасового заказа в минутах
-		HourlyMinutes *int `json:"hourly_minutes,omitempty" validate:"omitempty"`
+		HourlyMinutes int `json:"hourly_minutes,omitempty" validate:"omitempty"`
 		// Призовой заказ
 		IsPrize *bool `json:"is_prize,omitempty" validate:"omitempty"`
 		// Обратный путь за городом
@@ -64,9 +64,9 @@ type (
 			Lon float64 `json:"lon"`
 		} `json:"stops,omitempty" validate:"omitempty"`
 		// ИД группы экипажа
-		CrewGroupID *int `json:"crew_group_id,omitempty" validate:"omitempty"`
+		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
-		UdsID *int `json:"uds_id,omitempty" validate:"omitempty"`
+		UdsID int `json:"uds_id,omitempty" validate:"omitempty"`
 		// Нужно ли выполнять анализ адресов и маршрута.
 		// Если данный флаг установлен (analyze_route=true), то значения параметров: distance_city, distance_country, source_distance_country, переданные в данном запросе будут игнорироваться.
 		// Они автоматически будут рассчитаны в ходе выполнения запроса в результате анализа адресов и маршрута.
