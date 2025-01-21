@@ -55,14 +55,7 @@ type (
 		// Признак безналичного заказа
 		Cashless *bool `json:"cashless,omitempty" validate:"omitempty"`
 		// Список остановок
-		Stops []struct {
-			// ИД района остановки
-			ZoneID int `json:"zone_id"`
-			// Широта адреса остановки
-			Lat float64 `json:"lat"`
-			// Долгота адреса остановки
-			Lon float64 `json:"lon"`
-		} `json:"stops,omitempty" validate:"omitempty"`
+		Stops []Stops `json:"stops,omitempty" validate:"omitempty"`
 		// ИД группы экипажа
 		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
@@ -75,6 +68,15 @@ type (
 		AnalyzeRoute *bool `json:"analyze_route,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+	}
+
+	Stops []struct {
+		// ИД района остановки
+		ZoneID int `json:"zone_id"`
+		// Широта адреса остановки
+		Lat float64 `json:"lat"`
+		// Долгота адреса остановки
+		Lon float64 `json:"lon"`
 	}
 
 	CalcOrderCost2Response struct {
