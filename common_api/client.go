@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -83,6 +84,7 @@ func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp in
 	if request != "" {
 		url += "?" + request
 	}
+	log.Print("Get request:", request)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -97,6 +99,7 @@ func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp i
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 
 	body := []byte(values.Encode())
+	log.Print("Post body:", string(body))
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {
@@ -115,6 +118,7 @@ func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp interfa
 	if err != nil {
 		return err
 	}
+	log.Print("PostJson body:", string(body))
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {

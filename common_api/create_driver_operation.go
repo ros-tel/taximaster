@@ -20,7 +20,7 @@ type (
 		// Комментарий
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
 		// ИД типа счета (0 - основной счет), по умолчанию 0
-		AccountKind int `json:"account_kind,omitempty" validate:"omitempty,min=0"`
+		AccountKind *int `json:"account_kind,omitempty" validate:"omitempty,min=0"`
 	}
 
 	CreateDriverOperationResponse struct {

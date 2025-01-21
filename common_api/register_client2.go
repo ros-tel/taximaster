@@ -30,11 +30,11 @@ type (
 		// E-mail
 		Email string `json:"email,omitempty" validate:"omitempty,email"`
 		// Использовать E-mail для отправки уведомлений по заказу
-		UseEmailInforming bool `json:"use_email_informing,omitempty" validate:"omitempty"`
+		UseEmailInforming *bool `json:"use_email_informing,omitempty" validate:"omitempty"`
 		// Комментарий
 		Comment string `json:"comment,omitempty" validate:"omitempty"`
 		// Использовать собственный счет для оплаты заказов
-		UseOwnAccount bool `json:"use_own_account,omitempty" validate:"omitempty"`
+		UseOwnAccount *bool `json:"use_own_account,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
 		AttributeValue []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
 	}

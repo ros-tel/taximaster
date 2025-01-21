@@ -19,7 +19,7 @@ type (
 		Radius float64 `validate:"required"`
 
 		// Искать экипажи без реальных координат по координатам стоянок
-		CrewsWithoutCoords bool `validate:"omitempty"`
+		CrewsWithoutCoords *bool `validate:"omitempty"`
 		// Допустимое время до освобождения в зоне поиска, если надо возвращать занятые экипажи (если 0, то искать только свободные экипажи), мин
 		CrewsReleaseIn int `validate:"omitempty"`
 		// ИД группы экипажей, заказы из которой должны видеть подходящие экипажи
@@ -52,8 +52,8 @@ func (cl *Client) FindCrewsByCoords(req FindCrewsByCoordsRequest) (response Find
 	v.Add("lat", strconv.FormatFloat(req.Lat, 'g', -1, 64))
 	v.Add("lon", strconv.FormatFloat(req.Lon, 'g', -1, 64))
 	v.Add("radius", strconv.FormatFloat(req.Radius, 'g', -1, 64))
-	if req.CrewsWithoutCoords {
-		v.Add("crews_without_coords", "true")
+	if req.CrewsWithoutCoords != nil {
+		v.Add("crews_without_coords", strconv.FormatBool(*req.CrewsWithoutCoords))
 	}
 	if req.CrewsReleaseIn != 0 {
 		v.Add("crews_release_in", strconv.Itoa(req.CrewsReleaseIn))

@@ -28,7 +28,7 @@ type (
 		// Разрешение на перевозку
 		License string `json:"license,omitempty" validate:"omitempty"`
 		// Тип работника (0 - работник компании, 1 - частник)
-		EmployeeType int `json:"employee_type,omitempty" validate:"omitempty,eq=0|eq=1"`
+		EmployeeType *int `json:"employee_type,omitempty" validate:"omitempty,eq=0|eq=1"`
 		// День рождения
 		Birthday string `json:"birthday,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Табельный номер

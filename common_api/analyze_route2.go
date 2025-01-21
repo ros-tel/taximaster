@@ -8,7 +8,7 @@ type (
 		Addresses []Address `json:"addresses" validate:"required"`
 
 		// Возвращать координаты точек полного маршрута (по умолчанию false)
-		GetFullRouteCoords bool `json:"get_full_route_coords,omitempty" validate:"omitempty"`
+		GetFullRouteCoords *bool `json:"get_full_route_coords,omitempty" validate:"omitempty"`
 		// ИД группы экипажей
 		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 	}
