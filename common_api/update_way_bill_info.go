@@ -21,9 +21,9 @@ type (
 		// ИД автомобиля
 		CarID int `validate:"omitempty"`
 		// Номер путевого листа
-		Number string `validate:"omitempty"`
+		Number *string `validate:"omitempty"`
 		// Комментарий
-		Comment string `validate:"omitempty"`
+		Comment *string `validate:"omitempty"`
 	}
 )
 
@@ -49,11 +49,11 @@ func (cl *Client) UpdateWayBillInfo(req UpdateWayBillInfoRequest) (response Empt
 	if req.CarID > 0 {
 		v.Add("car_id", strconv.Itoa(req.CarID))
 	}
-	if req.Number != "" {
-		v.Add("number", req.Number)
+	if req.Number != nil {
+		v.Add("number", *req.Number)
 	}
-	if req.Comment != "" {
-		v.Add("comment", req.Comment)
+	if req.Comment != nil {
+		v.Add("comment", *req.Comment)
 	}
 
 	/*

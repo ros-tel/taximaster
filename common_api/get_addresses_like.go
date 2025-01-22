@@ -10,11 +10,11 @@ import (
 type (
 	GetAddressesLikeRequest struct {
 		// Искать улицы
-		GetStreets bool `validate:"required"`
+		GetStreets *bool `validate:"required"`
 		// Искать пункты
-		GetPoints bool `validate:"required"`
+		GetPoints *bool `validate:"required"`
 		// Искать дома. Не может быть равно true, если get_streets = true или get_points = true.
-		GetHouses bool `validate:"required"`
+		GetHouses *bool `validate:"required"`
 		// Часть названия улицы или пункта, если идет поиск улиц или пунктов, или полное название улицы, если идет поиск домов
 		Street string `validate:"required"`
 
@@ -77,9 +77,9 @@ func (cl *Client) GetAddressesLike(req GetAddressesLikeRequest) (response GetAdd
 	}
 
 	v := url.Values{}
-	v.Add("get_streets", strconv.FormatBool(req.GetStreets))
-	v.Add("get_points", strconv.FormatBool(req.GetPoints))
-	v.Add("get_houses", strconv.FormatBool(req.GetHouses))
+	v.Add("get_streets", strconv.FormatBool(*req.GetStreets))
+	v.Add("get_points", strconv.FormatBool(*req.GetPoints))
+	v.Add("get_houses", strconv.FormatBool(*req.GetHouses))
 	v.Add("street", req.Street)
 	if req.House != "" {
 		v.Add("house", req.House)

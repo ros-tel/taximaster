@@ -13,10 +13,10 @@ type (
 		// Время подачи
 		SourceTime string `json:"source_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Призовой заказ
-		IsPrize bool `json:"is_prize,omitempty" validate:"omitempty"`
+		IsPrize *bool `json:"is_prize,omitempty" validate:"omitempty"`
 		// Массив координат адресов. Первый элемент — адрес подачи,
 		// последний — адрес назначения, между ними — остановки. Заполняется если определены координаты всех адресов.
-		Addresses Point `json:"addresses,omitempty" validate:"omitempty"`
+		Addresses *Point `json:"addresses,omitempty" validate:"omitempty"`
 	}
 
 	SelectTariffForOrderResponse struct {

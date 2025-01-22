@@ -24,7 +24,7 @@ type (
 		// Разрешение на перевозку
 		License string `json:"license,omitempty" validate:"omitempty"`
 		// Тип работника (0 - работник компании, 1 - частник)
-		EmployeeType int `json:"employee_type" validate:"omitempty,eq=0|eq=1"`
+		EmployeeType *int `json:"employee_type,omitempty" validate:"omitempty,eq=0|eq=1"`
 		// День рождения
 		Birthday string `json:"birthday,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Табельный номер
@@ -36,7 +36,7 @@ type (
 		// Терминальный аккаунт (если не указан, будет сгенерирован автоматически), должен состоять из 5 цифр
 		TermAccount string `json:"term_account,omitempty" validate:"omitempty"`
 		// Водитель самозанятый
-		SelfEmployed bool `json:"self_employed,omitempty" validate:"omitempty"`
+		SelfEmployed *bool `json:"self_employed,omitempty" validate:"omitempty"`
 		// ИНН водителя
 		Inn string `json:"inn,omitempty" validate:"omitempty"`
 		// СНИЛС водителя

@@ -11,7 +11,7 @@ type (
 		// Время подачи
 		SourceTime string `json:"source_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Предварительный заказ
-		IsPrior bool `json:"is_prior,omitempty" validate:"omitempty"`
+		IsPrior *bool `json:"is_prior,omitempty" validate:"omitempty"`
 		// ИД клиента
 		ClientID int `json:"client_id,omitempty" validate:"omitempty"`
 		// Телефон клиента
@@ -23,15 +23,15 @@ type (
 		// ИД района подачи
 		SourceZoneID int `json:"source_zone_id,omitempty" validate:"omitempty"`
 		// Долгота адреса подачи
-		SourceLon float64 `json:"source_lon,omitempty" validate:"omitempty"`
+		SourceLon *float64 `json:"source_lon,omitempty" validate:"omitempty"`
 		// Широта адреса подачи
-		SourceLat float64 `json:"source_lat,omitempty" validate:"omitempty"`
+		SourceLat *float64 `json:"source_lat,omitempty" validate:"omitempty"`
 		// ИД района назначения
 		DestZoneID int `json:"dest_zone_id,omitempty" validate:"omitempty"`
 		// Долгота адреса назначения
-		DestLon float64 `json:"dest_lon,omitempty" validate:"omitempty"`
+		DestLon *float64 `json:"dest_lon,omitempty" validate:"omitempty"`
 		// Широта адреса назначения
-		DestLat float64 `json:"dest_lat,omitempty" validate:"omitempty"`
+		DestLat *float64 `json:"dest_lat,omitempty" validate:"omitempty"`
 		// Километраж по городу
 		DistanceCity float64 `json:"distance_city,omitempty" validate:"omitempty"`
 		// Километраж за городом
@@ -39,30 +39,23 @@ type (
 		// Километраж до подачи за городом
 		SourceDistanceCountry float64 `json:"source_distance_country,omitempty" validate:"omitempty"`
 		// Загородный заказ
-		IsCountry bool `json:"is_country,omitempty" validate:"omitempty"`
+		IsCountry *bool `json:"is_country,omitempty" validate:"omitempty"`
 		// Время ожидания посадки клиента в минутах
 		WaitingMinutes int `json:"waiting_minutes,omitempty" validate:"omitempty"`
 		// Почасовой заказ
-		IsHourly bool `json:"is_hourly,omitempty" validate:"omitempty"`
+		IsHourly *bool `json:"is_hourly,omitempty" validate:"omitempty"`
 		// Длительность почасового заказа в минутах
 		HourlyMinutes int `json:"hourly_minutes,omitempty" validate:"omitempty"`
 		// Призовой заказ
-		IsPrize bool `json:"is_prize,omitempty" validate:"omitempty"`
+		IsPrize *bool `json:"is_prize,omitempty" validate:"omitempty"`
 		// Обратный путь за городом
-		BackWay bool `json:"back_way,omitempty" validate:"omitempty"`
+		BackWay *bool `json:"back_way,omitempty" validate:"omitempty"`
 		// Массив параметров заказа. Устарело. Рекомендуется использовать параметр attribute_values
 		OrderParams []int `json:"order_params,omitempty" validate:"omitempty"`
 		// Признак безналичного заказа
-		Cashless bool `json:"cashless,omitempty" validate:"omitempty"`
+		Cashless *bool `json:"cashless,omitempty" validate:"omitempty"`
 		// Список остановок
-		Stops []struct {
-			// ИД района остановки
-			ZoneID int `json:"zone_id"`
-			// Широта адреса остановки
-			Lat float64 `json:"lat"`
-			// Долгота адреса остановки
-			Lon float64 `json:"lon"`
-		} `json:"stops,omitempty" validate:"omitempty"`
+		Stops []Stops `json:"stops,omitempty" validate:"omitempty"`
 		// ИД группы экипажа
 		CrewGroupID int `json:"crew_group_id,omitempty" validate:"omitempty"`
 		// ИД службы ЕДС
@@ -72,9 +65,18 @@ type (
 		// Они автоматически будут рассчитаны в ходе выполнения запроса в результате анализа адресов и маршрута.
 		// Также перед анализом адресов будут автоматически найдены районы (по справочнику "Районы") для тех адресов, у которых район не указан явно (zone_id=0).
 		// Также по результатам анализа адресов автоматически будут определены флаги "Загородный заказ" (is_country) и "Межгород".
-		AnalyzeRoute bool `json:"analyze_route,omitempty" validate:"omitempty"`
+		AnalyzeRoute *bool `json:"analyze_route,omitempty" validate:"omitempty"`
 		// Массив значений атрибутов
 		AttributeValues []AttributeValue `json:"attribute_values,omitempty" validate:"omitempty"`
+	}
+
+	Stops []struct {
+		// ИД района остановки
+		ZoneID int `json:"zone_id"`
+		// Широта адреса остановки
+		Lat float64 `json:"lat"`
+		// Долгота адреса остановки
+		Lon float64 `json:"lon"`
 	}
 
 	CalcOrderCost2Response struct {

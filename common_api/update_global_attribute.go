@@ -8,15 +8,15 @@ type (
 		ID int `json:"id" validate:"required"`
 
 		// Значение, если тип атрибута "Логический"
-		BoolValue bool `json:"bool_value,omitempty" validate:"omitempty"`
+		BoolValue *bool `json:"bool_value,omitempty" validate:"omitempty"`
 		//  Значение, если тип атрибута:
 		//  - "Число" (непосредственное значение)
 		//  - "Число (выбор из списка)" (непосредственное значение выбранного элемента списка)
 		//  - "Перечисляемый" (значение выбранного элемента перечисления)
 		//  - "Дата" и "Дата/время" (Unix-время, всегда целое число)
-		NumValue float64 `json:"num_value,omitempty" validate:"omitempty"`
+		NumValue *float64 `json:"num_value,omitempty" validate:"omitempty"`
 		// 	Значение, если тип атрибута "Строка"
-		StrValue string `json:"str_value,omitempty" validate:"omitempty"`
+		StrValue *string `json:"str_value,omitempty" validate:"omitempty"`
 	}
 )
 

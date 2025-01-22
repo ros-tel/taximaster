@@ -16,13 +16,13 @@ type (
 		// Дата или дата/время начала.
 		// Если указывается дата без времени, то планируемое время начала резервирования устанавливается исходя из времени начала,
 		// указанного в соответствующем типе резервирования
-		StartTime string `json:"start_time" validate:"required,datetime=20060102150405"`
+		StartTime string `json:"start_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Время окончания резервирования. Если не указано, рассчитывается на основании времени планируемого начала резервирования и продолжительности резервирования, указанного в соответствующем типе резервирования
 		FinishTime string `json:"finish_time,omitempty" validate:"omitempty,datetime=20060102150405"`
 		// Комментарий
-		Comment string `json:"comment,omitempty" validate:"omitempty"`
+		Comment *string `json:"comment,omitempty" validate:"omitempty"`
 		// Не проверять пересечение с резервированиями
-		DontCheckIntersectionWithReservations bool `json:"dont_check_intersection_with_reservations,omitempty" validate:"omitempty"`
+		DontCheckIntersectionWithReservations *bool `json:"dont_check_intersection_with_reservations,omitempty" validate:"omitempty"`
 	}
 )
 

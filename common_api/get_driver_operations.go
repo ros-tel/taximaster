@@ -17,7 +17,7 @@ type (
 		FinishTime string `validate:"required,datetime=20060102150405"`
 
 		// ИД типа счета (0 - основной счет), по умолчанию 0
-		AccountKind int `validate:"omitempty"`
+		AccountKind *int `validate:"omitempty"`
 	}
 
 	GetDriverOperationsResponse struct {
@@ -57,8 +57,8 @@ func (cl *Client) GetDriverOperations(req GetDriverOperationsRequest) (response 
 	v.Add("driver_id", strconv.Itoa(req.DriverID))
 	v.Add("start_time", req.StartTime)
 	v.Add("finish_time", req.FinishTime)
-	if req.AccountKind != 0 {
-		v.Add("account_kind", strconv.Itoa(req.AccountKind))
+	if req.AccountKind != nil {
+		v.Add("account_kind", strconv.Itoa(*req.AccountKind))
 	}
 
 	/*
