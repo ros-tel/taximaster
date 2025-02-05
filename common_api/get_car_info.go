@@ -43,8 +43,8 @@ type (
 		FuelLevel float64 `json:"fuel_level"`
 		// ИД службы ЕДС
 		UdsID int `json:"uds_id"`
-		// Класс автомобиля (возвращаются ид классов, 0 не задан, а далее цифры соответствуют порядку в списке)
-		CarClass int `json:"car_class"`
+		// Класс автомобиля (A, B, C, ...)
+		CarClass string `json:"car_class"`
 		// VIN
 		Vin string `json:"vin"`
 		// Номер кузова
