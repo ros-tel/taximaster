@@ -21,9 +21,9 @@ type (
 	}
 
 	Response struct {
-		Code  int         `json:"code"`
-		Descr string      `json:"descr"`
-		Data  interface{} `json:"data"`
+		Code  int    `json:"code"`
+		Descr string `json:"descr"`
+		Data  any    `json:"data"`
 	}
 
 	EmptyResponse struct {
@@ -49,7 +49,7 @@ func NewClient(addr, key string, id *int) *Client {
 	}
 }
 
-func (cl *Client) invoke(e errorMap, req *http.Request, obj_resp interface{}) error {
+func (cl *Client) invoke(e errorMap, req *http.Request, obj_resp any) error {
 	if cl.user_id != nil {
 		req.Header.Add("X-User-Id", strconv.Itoa(*cl.user_id))
 	}
@@ -74,7 +74,7 @@ func (cl *Client) invoke(e errorMap, req *http.Request, obj_resp interface{}) er
 	return nil
 }
 
-func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp any) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 	var request string
 	if values != nil {
@@ -93,7 +93,7 @@ func (cl *Client) Get(reqName string, e errorMap, values url.Values, obj_resp in
 	return cl.invoke(e, req, obj_resp)
 }
 
-func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp any) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 
 	body := []byte(values.Encode())
@@ -108,7 +108,7 @@ func (cl *Client) Post(reqName string, e errorMap, values url.Values, obj_resp i
 	return cl.invoke(e, req, obj_resp)
 }
 
-func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp interface{}) error {
+func (cl *Client) PostJson(reqName string, e errorMap, obj_req, obj_resp any) error {
 	url := "https://" + cl.addr + "/common_api/1.0/" + reqName
 
 	body, err := json.Marshal(obj_req)

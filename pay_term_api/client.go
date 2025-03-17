@@ -20,9 +20,9 @@ type (
 	}
 
 	Response struct {
-		Code  int         `json:"code"`
-		Descr string      `json:"descr"`
-		Data  interface{} `json:"data"`
+		Code  int    `json:"code"`
+		Descr string `json:"descr"`
+		Data  any    `json:"data"`
 	}
 
 	EmptyResponse struct {
@@ -47,7 +47,7 @@ func NewClient(addr, key string) *Client {
 	}
 }
 
-func (cl *Client) Post(reqName string, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Post(reqName string, values url.Values, obj_resp any) error {
 	url := "https://" + cl.addr + "/pay_term_api/1.0/" + reqName
 
 	body := []byte(values.Encode())

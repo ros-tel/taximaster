@@ -20,9 +20,9 @@ type (
 	}
 
 	Response struct {
-		Code  int         `xml:"code"`
-		Descr string      `xml:"descr"`
-		Data  interface{} `xml:"data"`
+		Code  int    `xml:"code"`
+		Descr string `xml:"descr"`
+		Data  any    `xml:"data"`
 	}
 
 	EmptyResponse struct {
@@ -47,7 +47,7 @@ func NewClient(addr, key string) *Client {
 	}
 }
 
-func (cl *Client) Get(reqName string, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Get(reqName string, values url.Values, obj_resp any) error {
 	url := "https://" + cl.addr + "/tm_tapi/1.0/" + reqName
 
 	var request string
@@ -83,7 +83,7 @@ func (cl *Client) Get(reqName string, values url.Values, obj_resp interface{}) e
 	return nil
 }
 
-func (cl *Client) Post(reqName string, values url.Values, obj_resp interface{}) error {
+func (cl *Client) Post(reqName string, values url.Values, obj_resp any) error {
 	url := "https://" + cl.addr + "/tm_tapi/1.0/" + reqName
 
 	body := []byte(values.Encode())
